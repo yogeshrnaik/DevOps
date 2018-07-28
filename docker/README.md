@@ -119,8 +119,7 @@ This command will install the latest version of docker into the VM.
 ## The Docker flow: Images to containers
 An image is a file that makes up just enough of the operating system to be able to run it independently.
 
-From Docker Quickstart Terminal type following to list docker images available on your computer:
-
+From Docker Quickstart Terminal type following to list docker images available on your computer.
 ```
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED            SIZE
@@ -128,3 +127,75 @@ ubuntu              14.04               578c3e61a98c        4 weeks ago         
 ubuntu              latest              113a43faa138        4 weeks ago         81.2MB
 hello-world         latest              e38bc07ac18e        2 months ago        1.85kB
 ```
+| Column name | Description  |
+|--|--|
+| Repository | Where the image came from |
+| Tag | Tag is like a version number |
+| Image ID | Internal docker representation of this image  |
+
+We can refer to any image by a combination of it's name and tag. 
+Or we can refer to it by its image ID.
+E.g. **ubuntu:latest** or **113a43faa138**
+
+### Running image
+**docker run** command takes an image and converts it into a running container with a process in it that is doing something.
+
+![Docker Image to Running Container](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-image-to-container.jpg)
+
+For example, the following command will launch a container that is running latest Ubuntu bash.
+
+	-ti option in the command is for terminal interactive  
+
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker run -ti ubuntu:latest bash
+
+root@3b30503170b8:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
+root@3b30503170b8:/# cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=18.04
+DISTRIB_CODENAME=bionic
+DISTRIB_DESCRIPTION="Ubuntu 18.04 LTS"
+
+root@3b30503170b8:/# exit
+```
+You can exit from the Ubuntu bash by typing "exit" command or CTRL+D.
+
+To see which containers docker is running currently, use "**docker ps**" command.
+```
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+3b30503170b8        ubuntu:latest       "bash"              2 minutes ago       Up 2 minutes                            friendly_johnson
+```
+| Column name | Description  |
+|--|--|
+| Container ID | Each running container has an unique ID. It is different than the image ID from which it was created. |
+| Image | Image from which the container was created |
+| Command | Command the container is running |
+| Names | Docker provided a name to this container as we did not specify any |
+
+### Stopped Containers
+If we create any new files and/or install new software, while inside a running container, once the container is stopped, those files/software changes **do not** end up in the image from which the container was created. They remain in the stopped container.
+
+We can find all stopped containers using following command.
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS                      PORTS               NAMES
+91910e2383cf        ubuntu:latest       "bash"               8 minutes ago       Exited (0) 7 minutes ago                        thirsty_carson
+4fc959ba597e        ubuntu:latest       "bash"               8 minutes ago       Exited (0) 7 minutes ago                        confident_bell
+```
+	-a option will show all containers running as well as stopped.
+
+To see the last stopped container, use following command.
+```
+$ docker ps -l
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+91910e2383cf        ubuntu:latest       "bash"              15 minutes ago      Exited (0) 14 minutes ago                       thirsty_carson
+```
+The "Status" of stopped container can give you a clue why it was stopped.
+For example, in above case the status is "Exited (0)" which means container was stopped without any errors.
+
+### Container to Image
