@@ -199,3 +199,78 @@ The "Status" of stopped container can give you a clue why it was stopped.
 For example, in above case the status is "Exited (0)" which means container was stopped without any errors.
 
 ### Container to Image
+All the changes done inside a running container remain in the stopped container. But the original docker image from which the container was created does not change.
+
+We can create a new image from a stopped container.
+
+![Docker Flow](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-flow.jpg)
+
+Create a new image from a stopped container.
+ 1. Lets launch a container first
+ 2. Then create a new file inside the container
+ 3. Stop the container
+ 4. Use docker commit to create new image from the stopped container
+
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker run -ti ubuntu:latest bash
+
+root@a84c1e236c44:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
+root@a84c1e236c44:/# touch MY-SAMPLE-FILE.txt
+
+root@a84c1e236c44:/# ls
+MY-SAMPLE-FILE.txt  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
+root@a84c1e236c44:/# exit
+
+$ docker ps -l
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+a84c1e236c44        ubuntu:latest       "bash"              24 seconds ago      Exited (0) 4 seconds ago                       quizzical_wozniak
+
+$ docker commit a84c1e236c44
+sha256:788c2d98f4fc32973935056b682395c9cea2cba79d9f3da1f78dbbd1b94917c5
+```
+Docker has created a very big number for the new image which is not very convenient.
+
+We can use the "tag" command to give name to image.
+```
+$ docker tag 788c2d98f4fc32973935056b682395c9cea2cba79d9f3da1f78dbbd1b94917c5 my-sample-image
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+my-sample-image     latest              788c2d98f4fc        3 minutes ago       81.2MB
+hello-world         latest              e38bc07ac18e        3 months ago        1.85kB
+
+$ docker run -ti my-sample-image bash
+root@e00d28c69fc9:/# ls
+MY-SAMPLE-FILE.txt  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
+root@e00d28c69fc9:/# exit
+```
+Creating image from a stopped container and given the new image a name can be done in a single command as follows.
+```
+$ docker commit <CONTAINER_ID> <NEW_IMAGE_NAME>
+OR
+$ docker commit <CONTAINER_NAME> <NEW_IMAGE_NAME>
+```
+
+### Deleting Stopped containers and images from local
+You can delete an image from local using following command.
+```
+$ docker rmi <Image_ID OR Image_Tag>
+```
+If an image is associated with a stopped container then you will get error:
+```
+$ docker rmi 1bb98ca599a5 7848ab4c11d0 2fd06b8310ca
+Error response from daemon: conflict: unable to delete 1bb98ca599a5 (must be forced) - image is being used by stopped container 2c59b05df02c
+Error response from daemon: conflict: unable to delete 7848ab4c11d0 (must be forced) - image is being used by stopped container 969a86182e8a
+Error response from daemon: conflict: unable to delete 2fd06b8310ca (cannot be forced) - image has dependent child images
+```
+In this case, we have to delete the stopped container first and then we can delete the image.
+
+To delete container, use following command.
+```
+$ docker rm <ID_or_Name_of_Container> <ID_or_Name_of_Container>
+```
