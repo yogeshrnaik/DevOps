@@ -117,7 +117,6 @@ This command will install the latest version of docker into the VM.
 	Note: In case of issues with VM, try to upgrade and then restart the VM.
 
 ## The Docker flow: Images to containers
-
 An image is a file that makes up just enough of the operating system to be able to run it independently.
 
 From Docker Quickstart Terminal type following to list docker images available on your computer:
