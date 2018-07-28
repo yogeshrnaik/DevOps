@@ -249,7 +249,7 @@ MY-SAMPLE-FILE.txt  bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc
 
 root@e00d28c69fc9:/# exit
 ```
-Creating image from a stopped container and given the new image a name can be done in a single command as follows.
+Creating image from a stopped container and giving the new image a name can be done in a single command as follows.
 ```
 $ docker commit <CONTAINER_ID> <NEW_IMAGE_NAME>
 OR
@@ -274,3 +274,76 @@ To delete container, use following command.
 ```
 $ docker rm <ID_or_Name_of_Container> <ID_or_Name_of_Container>
 ```
+## Running things in Docker
+### docker run
+When we run command "docker run" it starts a container by giving an image name and a process to run in that container.
+
+	docker run <OPTIONS> <IMAGE_NAME> <MAIN_PROCESS>
+ 
+ - Containers have a main process
+ - The container stops when that main process exists . The container is not done until that process exits. 
+ - If we start other processes in the container later, the container still exits when that main process finishes.
+
+So docker containers have one main process, and containers have names. If we don't give it a name, docker will make one up.
+
+### --rm option
+With --rm option in docker run command, the container is removed automatically once it is stopped.
+```
+$ docker run --rm -ti ubuntu sleep 5
+``` 
+The above command starts a container, that will sit there for 5 seconds and then exit. 
+The container is removed automatically because of --rm option.
+
+Another example where we start a container, sleep for few seconds and then echo "all done" and then the container exits and is also removed due to --rm option.
+```
+$ docker run --rm -ti ubuntu bash -c "sleep 3; echo all done"
+all done
+``` 
+### Leaving things running in a container (-d option) 
+Docker has the idea of detached containers. We can start a container and just let it run.
+
+This is achieved using -d option.
+```
+$ docker run -d -it ubuntu bash
+6ff08c5f3deede7a14cdc1c697fd88a510e52a79d7dfadeed4982aa5fee4b9ab
+```
+This prints the identifier using which we can manage this running container.
+Instead of this identifier, we can find the name of the container.
+```
+$ docker ps -l
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
+6ff08c5f3dee        ubuntu              "bash"              About a minute ago   Up About a minute                       goofy_feynman
+```
+We can attach back to this running container using its name.
+```
+$ docker attach goofy_feynman
+root@6ff08c5f3dee:/#
+```
+To detach from a running container, press CTRL+P followed by CTRL+Q.
+```
+root@6ff08c5f3dee:/# read escape sequence
+
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+
+$ docker ps -l
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+6ff08c5f3dee        ubuntu              "bash"              3 minutes ago       Up 3 minutes                            goofy_feynman
+```
+Detaching from container leaves the container still running and you can attach back to it if you want.
+
+### docker exec
+If you want to add another process to a running container, you can do it using "docker exec".
+
+```
+$ docker ps -l
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+6ff08c5f3dee        ubuntu              "bash"              3 minutes ago       Up 3 minutes                            goofy_feynman
+
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker exec -ti goofy_feynman bash
+root@6ff08c5f3dee:/#
+```
+Above command starts up another bash in existing running container.
+
+If original container process stops for some reason then this another bash will also stop automatically.
+
