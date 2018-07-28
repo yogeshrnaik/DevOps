@@ -19,12 +19,88 @@ To use docker on Mac or Windows, we need to install the Docker toolbox. This too
 Docker toolbox will install following:
 ![Docker Installation](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-installation.jpg)
 
- - a program called **Docker**. This will help us manage the Docker virtual machine. 
+ - a client program called **Docker**. This will help us manage the Docker containers. 
  - a program called **Virtual box** for managing Virtual Machines.
+ - a Linux Virtual machine inside which the docker server program runs.
  - a program called **Docker machine** that manages Linux VM. 
- - Inside this VM, it will have the **docker server program**. All docker commands will be sent to this server docker program inside this VM. 
+ - Inside this Linux VM, it will have the **docker server program**. All docker commands will be sent to this server docker program inside this VM. 
 
 ### Installing Docker on Windows
+
+
+
+### How to use Docker on Windows
+Run "Docker Quickstart Terminal" from start menu.
+
+This will cause the Docker machine to start up if it is not already running.
+![Linux VM](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-linux-vm.jpg)
+
+Docker Quick start Terminal will also connect to this Linux Virtual machine. 
+
+It prints the IP address of the machine to which the terminal is currently connecting to.
+```
+...
+(default) Waiting for an IP...
+...
+Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.
+...
+docker is configured to use the default machine with IP 192.168.99.100
+...
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$
+```
+In this Quick start terminal, we can run any docker command. This command is sent to the Docker server program running inside the Linux VM.
+
+### docker-machine command
+Docker machine command can be used to manage the Linux VM.
+
+**docker-machine ip** will print the IP address of the Linux VM to which it is currently connected to.
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker-machine ip
+192.168.99.100
+```
+**docker-machine ssh** will connect to that machine and will give you command  prompt.
+```
+$ docker-machine ssh
+                        ##         .
+                  ## ## ##        ==
+               ## ## ## ## ##    ===
+           /"""""""""""""""""\___/ ===
+      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+           \______ o           __/
+             \    \         __/
+              \____\_______/
+ _                 _   ____     _            _
+| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+| '_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ '__|
+| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   <  __/ |
+|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
+Boot2Docker version 18.05.0-ce, build HEAD : b5d6989 - Thu May 10 16:35:28 UTC 2018
+Docker version 18.05.0-ce, build f150324
+docker@default:~$
+```
+
+**docker-machine stop** will stop the VM.
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker-machine stop
+Stopping "default"...
+Machine "default" was stopped.
+```
+**docker-machine start** will start the VM.
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker-machine start
+Starting "default"...
+(default) Check network to re-create if needed...
+(default) Windows might ask for the permission to configure a dhcp server. Sometimes, such confirmation window is minimized in the taskbar.
+(default) Waiting for an IP...
+Machine "default" was started.
+Waiting for SSH to be available...
+Detecting the provisioner...
+Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.
+```
 
 
 ## The Docker flow: Images to containers
