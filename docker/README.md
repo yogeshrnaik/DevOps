@@ -1,3 +1,4 @@
+
 # Docker
 Docker is not a VM (virtual machine). 
 
@@ -16,12 +17,12 @@ Docker's main job is to manager Linux server and start containers on it.
 To use docker on Mac or Windows, we need to install the Docker toolbox. This toolbox runs a Linux Virtual machine.
 
 Docker toolbox will install following:
-[Docker Installation](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-installation.jpg)
+![Docker Installation](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-installation.jpg)
 
  - a program called **Docker**. This will help us manage the Docker virtual machine. 
  - a program called **Virtual box** for managing Virtual Machines.
- - a program called **Docker machine** that manages Linux VM. Inside this VM, it will have the server side docker program. All docker commands will be sent to this server docker program inside this VM. 
-
+ - a program called **Docker machine** that manages Linux VM. 
+ - Inside this VM, it will have the **docker server program**. All docker commands will be sent to this server docker program inside this VM. 
 
 ### Installing Docker on Windows
 
