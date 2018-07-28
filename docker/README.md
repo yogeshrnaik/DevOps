@@ -26,13 +26,14 @@ Docker toolbox will install following:
  - Inside this Linux VM, it will have the **docker server program**. All docker commands will be sent to this server docker program inside this VM. 
 
 ### Installing Docker on Windows
+Google for "docker toolbox" or go to https://docs.docker.com/toolbox/toolbox_install_windows/
+ 
+Follow the instructions mentioned on this page.
 
+## How to use Docker on Windows
+Once the Docker toolbox installation is complete, run "Docker Quickstart Terminal" from start menu.
 
-
-### How to use Docker on Windows
-Run "Docker Quickstart Terminal" from start menu.
-
-This will cause the Docker machine to start up if it is not already running.
+This will cause the Docker Linux VM to start up if it is not already running.
 ![Linux VM](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-linux-vm.jpg)
 
 Docker Quick start Terminal will also connect to this Linux Virtual machine. 
@@ -49,18 +50,22 @@ docker is configured to use the default machine with IP 192.168.99.100
 naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
 $
 ```
-In this Quick start terminal, we can run any docker command. This command is sent to the Docker server program running inside the Linux VM.
+![Docker Quick start Terminal](https://raw.githubusercontent.com/yogeshrnaik/DevOps/master/docker/images/docker-quickstart-terminal.jpg)
 
-### docker-machine command
-Docker machine command can be used to manage the Linux VM.
+In this Quick start terminal, we can run any docker command. Docker commands are sent to the Docker server program running inside the Linux VM.
 
-**docker-machine ip** will print the IP address of the Linux VM to which it is currently connected to.
+### docker-machine commands
+Docker toolbox also installs docker-machine program that we can use to manage the Linux VM.
+
+#### docker-machine ip 
+It will print the IP address of the Linux VM to which it is currently connected to.
 ```
 naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
 $ docker-machine ip
 192.168.99.100
 ```
-**docker-machine ssh** will connect to that machine and will give you command  prompt.
+#### docker-machine ssh 
+It connects to that machine and will give you command  prompt.
 ```
 $ docker-machine ssh
                         ##         .
@@ -81,14 +86,16 @@ Docker version 18.05.0-ce, build f150324
 docker@default:~$
 ```
 
-**docker-machine stop** will stop the VM.
+#### docker-machine stop
+This will stop the VM.
 ```
 naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
 $ docker-machine stop
 Stopping "default"...
 Machine "default" was stopped.
 ```
-**docker-machine start** will start the VM.
+#### docker-machine start
+This will start the VM.
 ```
 naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
 $ docker-machine start
@@ -101,7 +108,13 @@ Waiting for SSH to be available...
 Detecting the provisioner...
 Started machines may have new IP addresses. You may need to re-run the `docker-machine env` command.
 ```
+#### docker-machine scp
+This command is used to copying files into the VM.
 
+#### docker-machine upgrade
+This command will install the latest version of docker into the VM.
+
+	Note: In case of issues with VM, try to upgrade and then restart the VM.
 
 ## The Docker flow: Images to containers
 
