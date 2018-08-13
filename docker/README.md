@@ -1,4 +1,5 @@
 
+
 # Docker
 Docker is not a VM (virtual machine). 
 
@@ -347,3 +348,70 @@ Above command starts up another bash in existing running container.
 
 If original container process stops for some reason then this another bash will also stop automatically.
 
+# Docker Swarm
+
+To create a docker swarm on Windows, type the following command in Quickstart Terminal of Docker.
+
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker swarm init --advertise-addr 192.168.99.100
+Swarm initialized: current node (c7j8tfq8iwmva3tbwnus5rx88) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-1ogk19aezfu7qb6gosbznxueezwxtdddpnw2zlxhscg0ikk04q-7r6ny1jxhdb0sjsxt5doze3cw 192.168.99.100:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```
+```
+--advertise-addr is used to specify the address of Docker machine IP that 
+will be advertised to the other members of the swarm for API access and overlay networking.
+
+On this IP, other members of the swarm node will listen to for requests.
+```
+The command "docker info" will now show the details about the swarm we just initialized.
+
+```
+naiky@IN1WXL-301034 MINGW64 /c/DDrive/tools/Docker Toolbox
+$ docker info
+...
+...
+Swarm: active
+ NodeID: c7j8tfq8iwmva3tbwnus5rx88
+ Is Manager: true
+ ClusterID: anixo95hdehqk1nwo6ihvjdpx
+ Managers: 1
+ Nodes: 1
+ Orchestration:
+  Task History Retention Limit: 5
+ Raft:
+  Snapshot Interval: 10000
+  Number of Old Snapshots to Retain: 0
+  Heartbeat Tick: 1
+  Election Tick: 10
+ Dispatcher:
+  Heartbeat Period: 5 seconds
+ CA Configuration:
+  Expiry Duration: 3 months
+  Force Rotate: 0
+ Autolock Managers: false
+ Root Rotation In Progress: false
+ Node Address: 192.168.99.100
+ Manager Addresses:
+  192.168.99.100:2377
+...
+...
+```
+
+To leave the swarm, type following command.
+```
+$ docker swarm leave
+Error response from daemon: You are attempting to leave the swarm on a node that is participating as a manager. Removing the last manager erases all current state of the swarm. Use `--force` to ignore this message.
+```
+Since we have only one node in the swarm and that node is also master and it is trying to leave, Docker does not allow it.
+
+We can force this by using -f option.
+```
+$ docker swarm leave -f
+Node left the swarm.
+```
