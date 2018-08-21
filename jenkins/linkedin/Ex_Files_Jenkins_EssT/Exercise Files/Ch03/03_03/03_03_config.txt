@@ -1,0 +1,6 @@
+# Connecting jenkins and git
+# We need a personal auth token from github
+# to connect the system, and that can be grabbed
+# here:
+
+https://github.com/settings/tokens

@@ -1,0 +1,39 @@
+# Setup jenkins master and slave unix machines
+#0 launch a new VM or bare metal machine to support
+#  the agent machine.  This would be in much the same
+#  way as in module 02_01, and a small Ubuntu 18.04
+#  VM is recommended (1 core, 1G memory, 10Gdisk is plenty)
+#  This VM should have docker installed as well, along with
+#  the Jenkins user using the instructions from module 02_01
+
+#1 create an ssh public/private key pair on the master
+#  as the jenkins user
+
+ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa
+
+#2 copy the ~/.ssh/id_rsa.pub to the worker node(s)
+
+# on the master
+cat ~/.ssh/id_rsa.pub
+
+# on the worker
+cat >> ~/.ssh/authorized_keys <<EOF
+ssh-rsa KEY...
+EOF
+
+# confirm that you can log in as the jenkins user on
+# the worker machine from the master machine
+
+ssh jenkins@worker
+
+#3 It may be that Jenkins is unable to install Java on your worker
+#  node, so we'll just make sure it's already installed
+#  Log in to the worker as root, and add java 8
+
+add-apt-repository ppa:webupd8team/java
+apt-get update
+apt install oracle-java8-installer
+
+# Note that you have to manually accept the Oracle license
+# as a part of this process
+

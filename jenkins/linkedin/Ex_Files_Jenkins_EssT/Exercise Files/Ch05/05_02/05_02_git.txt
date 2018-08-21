@@ -1,0 +1,4 @@
+# The code for this module is on github:
+
+https://github.com/robertstarmer/evenOdd
+

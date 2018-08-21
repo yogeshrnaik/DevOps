@@ -1,0 +1,10 @@
+# Triggering a build via REST
+#1 We need a token from the Jenkins UI:
+Admin->Configure->Show API Token
+
+#2 We need a CSRF crumb
+curl --user "admin:TOKEN" 'http://jenkins.kumulus.co:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+# grab the entire string from Jenkins-Crumb:...
+
+#3 We can now trigger a build
+curl -X POST http://jenkins.kumulus.co:8080/job/multi-step/build --user admin:TOKEN --data-urlencode json='' -H "Jenkins-Crumb:....."

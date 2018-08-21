@@ -1,0 +1,13 @@
+# Starting Jenkins
+A quick way to launch a jenkins job is to do so in a docker environment
+
+There are still a number of gotchas and interactions within this model
+though, and it is still recommended to launch docker as the root
+user, which is a security risk in a production style deployment.  For
+production it is still recommended to launch jenkins as a process
+on a machine rather than in a docker container.
+
+For the purposes of this class, however, as long as you have access
+to a unix style environment with docker, you should be able to launch
+with this script so long as docker is already installed.  Otherwise
+follow one of the many available guides to enable a jenkins environment.

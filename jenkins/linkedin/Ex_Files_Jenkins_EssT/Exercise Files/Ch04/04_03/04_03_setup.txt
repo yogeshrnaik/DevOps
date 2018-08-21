@@ -1,0 +1,47 @@
+# Adding Docker for agents
+#1 Configure the target system docker for web/REST access
+#  add the following to the Start or ExecStart parameter of 
+#  /lib/systemd/system/docker.service
+-H tcp://0.0.0.0:4243
+
+#  then restart the docker service
+systemctl daemon-reload
+systemctl restart docker
+
+#2 Now we can configure jenkins to reach out to the new
+#  docker worker. We'll need a docker image to point to
+#  for the agent:
+jenkins/jnlp-slave
+
+#3 And then we can create a new project/job and add a docker
+#  resource to it
+pipeline {
+    agent {
+        docker { image 'node:9-alpine' }
+    }
+    stages {
+        stage('Test'){
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}#2 Now we can configure jenkins to reach out to the new
+#  docker worker. We'll need a docker image to point to
+#  for the agent:
+jenkins/jnlp-slave
+
+#3 And then we can create a new project/job and add a docker
+#  resource to it
+pipeline {
+    agent {
+        docker { image 'node:9-alpine' }
+    }
+    stages {
+        stage('Test'){
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
