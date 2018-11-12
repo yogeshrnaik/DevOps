@@ -1088,3 +1088,223 @@ PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubecon
 NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   5m
 PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> terraform destroy
+null_resource.tags_as_list_of_maps: Refreshing state... (ID: 9002294971603423036)
+aws_security_group.cluster: Refreshing state... (ID: sg-03e51eeeb304dd9b6)
+data.aws_region.current: Refreshing state...
+data.aws_iam_policy_document.workers_assume_role_policy: Refreshing state...
+data.aws_caller_identity.current: Refreshing state...
+data.aws_iam_policy_document.cluster_assume_role_policy: Refreshing state...
+data.aws_ami.eks_worker: Refreshing state...
+aws_iam_role.cluster: Refreshing state... (ID: poi-eks-cluster20181112145042729000000001)
+aws_security_group_rule.cluster_egress_internet: Refreshing state... (ID: sgrule-3008376012)
+aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Refreshing state... (ID: poi-eks-cluster20181112145042729000000001-20181112145048761900000003)
+aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Refreshing state... (ID: poi-eks-cluster20181112145042729000000001-20181112145048774900000004)
+aws_eks_cluster.this: Refreshing state... (ID: poi-eks-cluster)
+aws_security_group.workers: Refreshing state... (ID: sg-0c1068c7530d6a697)
+aws_iam_role.workers: Refreshing state... (ID: poi-eks-cluster20181112150046903400000005)
+data.aws_iam_policy_document.worker_autoscaling: Refreshing state...
+data.template_file.kubeconfig: Refreshing state...
+aws_iam_policy.worker_autoscaling: Refreshing state... (ID: arn:aws:iam::077978206904:policy/eks-wo...-eks-cluster20181112150046927400000007)
+local_file.kubeconfig: Refreshing state... (ID: d3b3f7595139dfd6234409cd78a396069f9e0de4)
+aws_security_group_rule.workers_ingress_self: Refreshing state... (ID: sgrule-104457586)
+aws_security_group_rule.workers_ingress_cluster: Refreshing state... (ID: sgrule-4234145352)
+aws_security_group_rule.workers_egress_internet: Refreshing state... (ID: sgrule-1851403480)
+aws_security_group_rule.workers_ingress_cluster_https: Refreshing state... (ID: sgrule-3453657617)
+aws_security_group_rule.cluster_https_worker_ingress: Refreshing state... (ID: sgrule-1332668048)
+aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Refreshing state... (ID: poi-eks-cluster20181112150046903400000005-20181112150054744700000009)
+aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Refreshing state... (ID: poi-eks-cluster20181112150046903400000005-2018111215005478460000000b)
+aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Refreshing state... (ID: poi-eks-cluster20181112150046903400000005-2018111215005475770000000a)
+aws_iam_instance_profile.workers: Refreshing state... (ID: poi-eks-cluster20181112150053227000000008)
+data.template_file.userdata: Refreshing state...
+aws_launch_configuration.workers: Refreshing state... (ID: poi-eks-cluster-02018111215010039420000000d)
+data.template_file.worker_role_arns: Refreshing state...
+aws_iam_role_policy_attachment.workers_autoscaling: Refreshing state... (ID: poi-eks-cluster20181112150046903400000005-2018111215005480270000000c)
+data.template_file.config_map_aws_auth: Refreshing state...
+local_file.config_map_aws_auth: Refreshing state... (ID: 61740f7da860da5e9336e29f337b9f7cb4f45cee)
+null_resource.update_config_map_aws_auth: Refreshing state... (ID: 6723567334385867812)
+aws_autoscaling_group.workers: Refreshing state... (ID: poi-eks-cluster-02018111215010884090000000e)
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  - module.eks.aws_autoscaling_group.workers
+
+  - module.eks.aws_eks_cluster.this
+
+  - module.eks.aws_iam_instance_profile.workers
+
+  - module.eks.aws_iam_policy.worker_autoscaling
+
+  - module.eks.aws_iam_role.cluster
+
+  - module.eks.aws_iam_role.workers
+
+  - module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy
+
+  - module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy
+
+  - module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly
+
+  - module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy
+
+  - module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy
+
+  - module.eks.aws_iam_role_policy_attachment.workers_autoscaling
+
+  - module.eks.aws_launch_configuration.workers
+
+  - module.eks.aws_security_group.cluster
+
+  - module.eks.aws_security_group.workers
+
+  - module.eks.aws_security_group_rule.cluster_egress_internet
+
+  - module.eks.aws_security_group_rule.cluster_https_worker_ingress
+
+  - module.eks.aws_security_group_rule.workers_egress_internet
+
+  - module.eks.aws_security_group_rule.workers_ingress_cluster
+
+  - module.eks.aws_security_group_rule.workers_ingress_cluster_https
+
+  - module.eks.aws_security_group_rule.workers_ingress_self
+
+  - module.eks.local_file.config_map_aws_auth
+
+  - module.eks.local_file.kubeconfig
+
+  - module.eks.null_resource.tags_as_list_of_maps
+
+  - module.eks.null_resource.update_config_map_aws_auth
+
+
+Plan: 0 to add, 0 to change, 25 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+module.eks.local_file.config_map_aws_auth: Destroying... (ID: 61740f7da860da5e9336e29f337b9f7cb4f45cee)
+module.eks.local_file.kubeconfig: Destroying... (ID: d3b3f7595139dfd6234409cd78a396069f9e0de4)
+module.eks.null_resource.update_config_map_aws_auth: Destroying... (ID: 6723567334385867812)
+module.eks.null_resource.update_config_map_aws_auth: Destruction complete after 0s
+module.eks.local_file.config_map_aws_auth: Destruction complete after 0s
+module.eks.local_file.kubeconfig: Destruction complete after 0s
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Destroying... (ID: poi-eks-cluster20181112150046903400000005-2018111215005478460000000b)
+module.eks.aws_autoscaling_group.workers: Destroying... (ID: poi-eks-cluster-02018111215010884090000000e)
+module.eks.aws_security_group_rule.workers_ingress_cluster: Destroying... (ID: sgrule-4234145352)
+module.eks.aws_security_group_rule.cluster_https_worker_ingress: Destroying... (ID: sgrule-1332668048)
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Destroying... (ID: poi-eks-cluster20181112150046903400000005-20181112150054744700000009)
+module.eks.aws_security_group_rule.workers_ingress_cluster_https: Destroying... (ID: sgrule-3453657617)
+module.eks.aws_security_group_rule.workers_ingress_self: Destroying... (ID: sgrule-104457586)
+module.eks.aws_security_group_rule.workers_egress_internet: Destroying... (ID: sgrule-1851403480)
+module.eks.aws_security_group_rule.cluster_egress_internet: Destroying... (ID: sgrule-3008376012)
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Destroying... (ID: poi-eks-cluster20181112150046903400000005-2018111215005475770000000a)
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Destruction complete after 1s
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Destruction complete after 1s
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Destruction complete after 2s
+module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Destroying... (ID: poi-eks-cluster20181112150046903400000005-2018111215005480270000000c)
+module.eks.aws_security_group_rule.workers_ingress_cluster: Destruction complete after 3s
+module.eks.aws_security_group_rule.cluster_https_worker_ingress: Destruction complete after 3s
+module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Destruction complete after 1s
+module.eks.aws_iam_policy.worker_autoscaling: Destroying... (ID: arn:aws:iam::077978206904:policy/eks-wo...-eks-cluster20181112150046927400000007)
+module.eks.aws_security_group_rule.cluster_egress_internet: Destruction complete after 6s
+module.eks.aws_security_group_rule.workers_ingress_self: Destruction complete after 6s
+module.eks.aws_iam_policy.worker_autoscaling: Destruction complete after 4s
+module.eks.aws_security_group_rule.workers_ingress_cluster_https: Destruction complete after 8s
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 10s elapsed)
+module.eks.aws_security_group_rule.workers_egress_internet: Still destroying... (ID: sgrule-1851403480, 10s elapsed)
+module.eks.aws_security_group_rule.workers_egress_internet: Destruction complete after 11s
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 20s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 30s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 40s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 50s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 1m0s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 1m10s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 1m20s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 1m30s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 1m40s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 1m50s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 2m0s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 2m10s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 2m20s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 2m30s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 2m40s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 2m50s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 3m0s elapsed)
+module.eks.aws_autoscaling_group.workers: Still destroying... (ID: poi-eks-cluster-02018111215010884090000000e, 3m10s elapsed)
+module.eks.aws_autoscaling_group.workers: Destruction complete after 3m18s
+module.eks.null_resource.tags_as_list_of_maps: Destroying... (ID: 9002294971603423036)
+module.eks.aws_launch_configuration.workers: Destroying... (ID: poi-eks-cluster-02018111215010039420000000d)
+module.eks.null_resource.tags_as_list_of_maps: Destruction complete after 0s
+module.eks.aws_launch_configuration.workers: Destruction complete after 1s
+module.eks.aws_iam_instance_profile.workers: Destroying... (ID: poi-eks-cluster20181112150053227000000008)
+module.eks.aws_security_group.workers: Destroying... (ID: sg-0c1068c7530d6a697)
+module.eks.aws_security_group.workers: Destruction complete after 4s
+module.eks.aws_iam_instance_profile.workers: Destruction complete after 4s
+module.eks.aws_iam_role.workers: Destroying... (ID: poi-eks-cluster20181112150046903400000005)
+module.eks.aws_iam_role.workers: Destruction complete after 3s
+module.eks.aws_eks_cluster.this: Destroying... (ID: poi-eks-cluster)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 1m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 1m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 1m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 1m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 1m40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 1m50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 2m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 2m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 2m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 2m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 2m40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 2m50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 3m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 3m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 3m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 3m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 3m40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 3m50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 4m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 4m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 4m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 4m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 4m40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 4m50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 5m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 5m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 5m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 5m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 5m40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 5m50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 6m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 6m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 6m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 6m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 6m40s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 6m50s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 7m0s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 7m10s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 7m20s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 7m30s elapsed)
+module.eks.aws_eks_cluster.this: Still destroying... (ID: poi-eks-cluster, 7m40s elapsed)
+module.eks.aws_eks_cluster.this: Destruction complete after 7m47s
+module.eks.aws_security_group.cluster: Destroying... (ID: sg-03e51eeeb304dd9b6)
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Destroying... (ID: poi-eks-cluster20181112145042729000000001-20181112145048774900000004)
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Destroying... (ID: poi-eks-cluster20181112145042729000000001-20181112145048761900000003)
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Destruction complete after 2s
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Destruction complete after 2s
+module.eks.aws_iam_role.cluster: Destroying... (ID: poi-eks-cluster20181112145042729000000001)
+module.eks.aws_security_group.cluster: Destruction complete after 3s
+module.eks.aws_iam_role.cluster: Destruction complete after 3s
+
+Destroy complete! Resources: 25 destroyed.
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks>
