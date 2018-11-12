@@ -1,0 +1,1086 @@
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> terraform plan
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+data.aws_caller_identity.current: Refreshing state...
+data.aws_region.current: Refreshing state...
+data.aws_iam_policy_document.cluster_assume_role_policy: Refreshing state...
+data.aws_ami.eks_worker: Refreshing state...
+data.aws_iam_policy_document.workers_assume_role_policy: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+ <= module.eks.data.aws_iam_policy_document.worker_autoscaling
+      id:                                                 <computed>
+      json:                                               <computed>
+      statement.#:                                        "2"
+      statement.0.actions.#:                              "5"
+      statement.0.actions.1274732150:                     "autoscaling:DescribeAutoScalingGroups"
+      statement.0.actions.2448883636:                     "autoscaling:DescribeAutoScalingInstances"
+      statement.0.actions.2555065653:                     "autoscaling:DescribeLaunchConfigurations"
+      statement.0.actions.3701464416:                     "autoscaling:DescribeTags"
+      statement.0.actions.4281419483:                     "autoscaling:GetAsgForInstance"
+      statement.0.effect:                                 "Allow"
+      statement.0.resources.#:                            "1"
+      statement.0.resources.2679715827:                   "*"
+      statement.0.sid:                                    "eksWorkerAutoscalingAll"
+      statement.1.actions.#:                              "3"
+      statement.1.actions.1536675971:                     "autoscaling:UpdateAutoScalingGroup"
+      statement.1.actions.3469696720:                     "autoscaling:TerminateInstanceInAutoScalingGroup"
+      statement.1.actions.557626329:                      "autoscaling:SetDesiredCapacity"
+      statement.1.condition.#:                            "2"
+      statement.1.condition.3636405986.test:              "StringEquals"
+      statement.1.condition.3636405986.values.#:          "1"
+      statement.1.condition.3636405986.values.4043113848: "true"
+      statement.1.condition.3636405986.variable:          "autoscaling:ResourceTag/k8s.io/cluster-autoscaler/enabled"
+      statement.1.condition.4028998177.test:              "StringEquals"
+      statement.1.condition.4028998177.values.#:          "1"
+      statement.1.condition.4028998177.values.653127311:  "owned"
+      statement.1.condition.4028998177.variable:          "autoscaling:ResourceTag/kubernetes.io/cluster/poi-eks-cluster"
+      statement.1.effect:                                 "Allow"
+      statement.1.resources.#:                            "1"
+      statement.1.resources.2679715827:                   "*"
+      statement.1.sid:                                    "eksWorkerAutoscalingOwn"
+
+ <= module.eks.data.template_file.config_map_aws_auth
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n${wor
+ker_role_arn}\n${map_roles}\n  mapUsers: |\n${map_users}\n  mapAccounts: |\n${map_accounts}\n"
+      vars.%:                                             <computed>
+
+ <= module.eks.data.template_file.kubeconfig
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "apiVersion: v1\npreferences: {}\nkind: Config\n\nclusters:\n- cluster:\n    server: ${endpoint}\n    certificate-au
+thority-data: ${cluster_auth_base64}\n  name: ${kubeconfig_name}\n\ncontexts:\n- context:\n    cluster: ${kubeconfig_name}\n    user: ${kubeconfig_name}\n  name: ${kubeconfig
+_name}\n\ncurrent-context: ${kubeconfig_name}\n\nusers:\n- name: ${kubeconfig_name}\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1alpha1\n      comman
+d: ${aws_authenticator_command}\n      args:\n        - \"token\"\n        - \"-i\"\n        - \"${cluster_name}\"\n${aws_authenticator_additional_args}\n${aws_authenticator_
+env_variables}\n"
+      vars.%:                                             <computed>
+
+ <= module.eks.data.template_file.userdata
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "#!/bin/bash -xe\n\n# Allow user supplied pre userdata code\n${pre_userdata}\n\n# Bootstrap and join the cluster\n/e
+tc/eks/bootstrap.sh --b64-cluster-ca '${cluster_auth_base64}' --apiserver-endpoint '${endpoint}' --kubelet-extra-args '${kubelet_extra_args}' '${cluster_name}'\n\n# Allow use
+r supplied userdata code\n${additional_userdata}\n"
+      vars.%:                                             <computed>
+
+ <= module.eks.data.template_file.worker_role_arns
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "    - rolearn: ${worker_role_arn}\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - syst
+em:bootstrappers\n        - system:nodes\n"
+      vars.%:                                             <computed>
+
+  + module.eks.aws_autoscaling_group.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      availability_zones.#:                               <computed>
+      default_cooldown:                                   <computed>
+      desired_capacity:                                   "0"
+      force_delete:                                       "false"
+      health_check_grace_period:                          "300"
+      health_check_type:                                  <computed>
+      launch_configuration:                               "${element(aws_launch_configuration.workers.*.id, count.index)}"
+      load_balancers.#:                                   <computed>
+      max_size:                                           "0"
+      metrics_granularity:                                "1Minute"
+      min_size:                                           "0"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster-default"
+      protect_from_scale_in:                              "false"
+      service_linked_role_arn:                            <computed>
+      tags.#:                                             <computed>
+      target_group_arns.#:                                <computed>
+      vpc_zone_identifier.#:                              <computed>
+      wait_for_capacity_timeout:                          "10m"
+
+  + module.eks.aws_eks_cluster.this
+      id:                                                 <computed>
+      arn:                                                <computed>
+      certificate_authority.#:                            <computed>
+      created_at:                                         <computed>
+      endpoint:                                           <computed>
+      name:                                               "poi-eks-cluster"
+      platform_version:                                   <computed>
+      role_arn:                                           "${aws_iam_role.cluster.arn}"
+      version:                                            "1.10"
+      vpc_config.#:                                       "1"
+      vpc_config.0.security_group_ids.#:                  <computed>
+      vpc_config.0.subnet_ids.#:                          "3"
+      vpc_config.0.subnet_ids.1737027237:                 "subnet-0f90d4b2597e54dc9"
+      vpc_config.0.subnet_ids.2424429063:                 "subnet-037ac1c0e6a3ba2fb"
+      vpc_config.0.subnet_ids.3914643950:                 "subnet-093f483dc98504530"
+      vpc_config.0.vpc_id:                                <computed>
+
+  + module.eks.aws_iam_instance_profile.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      create_date:                                        <computed>
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      path:                                               "/"
+      role:                                               "${lookup(var.worker_groups[count.index], \"iam_role_id\",  lookup(local.workers_group_defaults, \"iam_role_id\"))}"
+      roles.#:                                            <computed>
+      unique_id:                                          <computed>
+
+  + module.eks.aws_iam_policy.worker_autoscaling
+      id:                                                 <computed>
+      arn:                                                <computed>
+      description:                                        "EKS worker node autoscaling policy for cluster poi-eks-cluster"
+      name:                                               <computed>
+      name_prefix:                                        "eks-worker-autoscaling-poi-eks-cluster"
+      path:                                               "/"
+      policy:                                             "${data.aws_iam_policy_document.worker_autoscaling.json}"
+
+  + module.eks.aws_iam_role.cluster
+      id:                                                 <computed>
+      arn:                                                <computed>
+      assume_role_policy:                                 "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSClusterAssumeRole\",\n      \"Eff
+ect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"eks.amazonaws.com\"\n      }\n    }\n  ]\n}"
+      create_date:                                        <computed>
+      force_detach_policies:                              "false"
+      max_session_duration:                               "3600"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      path:                                               "/"
+      unique_id:                                          <computed>
+
+  + module.eks.aws_iam_role.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      assume_role_policy:                                 "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSWorkerAssumeRole\",\n      \"Effe
+ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}"
+      create_date:                                        <computed>
+      force_detach_policies:                              "false"
+      max_session_duration:                               "3600"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      path:                                               "/"
+      unique_id:                                          <computed>
+
+  + module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      role:                                               "${aws_iam_role.cluster.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+      role:                                               "${aws_iam_role.cluster.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_autoscaling
+      id:                                                 <computed>
+      policy_arn:                                         "${aws_iam_policy.worker_autoscaling.arn}"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_launch_configuration.workers
+      id:                                                 <computed>
+      associate_public_ip_address:                        "false"
+      ebs_block_device.#:                                 <computed>
+      ebs_optimized:                                      "false"
+      enable_monitoring:                                  "false"
+      iam_instance_profile:                               "${element(aws_iam_instance_profile.workers.*.id, count.index)}"
+      image_id:                                           "${lookup(var.worker_groups[count.index], \"ami_id\", local.workers_group_defaults[\"ami_id\"])}"
+      instance_type:                                      "${lookup(var.worker_groups[count.index], \"instance_type\", local.workers_group_defaults[\"instance_type\"])}"
+      key_name:                                           "${lookup(var.worker_groups[count.index], \"key_name\", local.workers_group_defaults[\"key_name\"])}"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster-default"
+      placement_tenancy:                                  "${lookup(var.worker_groups[count.index], \"placement_tenancy\", local.workers_group_defaults[\"placement_tenancy\"]
+)}"
+      root_block_device.#:                                "1"
+      root_block_device.0.delete_on_termination:          "true"
+      root_block_device.0.iops:                           "0"
+      root_block_device.0.volume_size:                    "0"
+      root_block_device.0.volume_type:                    "${lookup(var.worker_groups[count.index], \"root_volume_type\", local.workers_group_defaults[\"root_volume_type\"])}
+"
+      security_groups.#:                                  <computed>
+      spot_price:                                         "${lookup(var.worker_groups[count.index], \"spot_price\", local.workers_group_defaults[\"spot_price\"])}"
+      user_data_base64:                                   "${base64encode(element(data.template_file.userdata.*.rendered, count.index))}"
+
+  + module.eks.aws_security_group.cluster
+      id:                                                 <computed>
+      arn:                                                <computed>
+      description:                                        "EKS cluster security group."
+      egress.#:                                           <computed>
+      ingress.#:                                          <computed>
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      owner_id:                                           <computed>
+      revoke_rules_on_delete:                             "false"
+      tags.%:                                             "2"
+      tags.Environment:                                   "poi-eks-env"
+      tags.Name:                                          "poi-eks-cluster-eks_cluster_sg"
+      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+
+  + module.eks.aws_security_group.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      description:                                        "Security group for all nodes in the cluster."
+      egress.#:                                           <computed>
+      ingress.#:                                          <computed>
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      owner_id:                                           <computed>
+      revoke_rules_on_delete:                             "false"
+      tags.%:                                             "3"
+      tags.Environment:                                   "poi-eks-env"
+      tags.Name:                                          "poi-eks-cluster-eks_worker_sg"
+      tags.kubernetes.io/cluster/poi-eks-cluster:         "owned"
+      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+
+  + module.eks.aws_security_group_rule.cluster_egress_internet
+      id:                                                 <computed>
+      cidr_blocks.#:                                      "1"
+      cidr_blocks.0:                                      "0.0.0.0/0"
+      description:                                        "Allow cluster egress access to the Internet."
+      from_port:                                          "0"
+      protocol:                                           "-1"
+      security_group_id:                                  "${aws_security_group.cluster.id}"
+      self:                                               "false"
+      source_security_group_id:                           <computed>
+      to_port:                                            "0"
+      type:                                               "egress"
+
+  + module.eks.aws_security_group_rule.cluster_https_worker_ingress
+      id:                                                 <computed>
+      description:                                        "Allow pods to communicate with the EKS cluster API."
+      from_port:                                          "443"
+      protocol:                                           "tcp"
+      security_group_id:                                  "${aws_security_group.cluster.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${local.worker_security_group_id}"
+      to_port:                                            "443"
+      type:                                               "ingress"
+
+  + module.eks.aws_security_group_rule.workers_egress_internet
+      id:                                                 <computed>
+      cidr_blocks.#:                                      "1"
+      cidr_blocks.0:                                      "0.0.0.0/0"
+      description:                                        "Allow nodes all egress to the Internet."
+      from_port:                                          "0"
+      protocol:                                           "-1"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           <computed>
+      to_port:                                            "0"
+      type:                                               "egress"
+
+  + module.eks.aws_security_group_rule.workers_ingress_cluster
+      id:                                                 <computed>
+      description:                                        "Allow workers Kubelets and pods to receive communication from the cluster control plane."
+      from_port:                                          "1025"
+      protocol:                                           "tcp"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${local.cluster_security_group_id}"
+      to_port:                                            "65535"
+      type:                                               "ingress"
+
+  + module.eks.aws_security_group_rule.workers_ingress_cluster_https
+      id:                                                 <computed>
+      description:                                        "Allow pods running extension API servers on port 443 to receive communication from cluster control plane."
+      from_port:                                          "443"
+      protocol:                                           "tcp"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${local.cluster_security_group_id}"
+      to_port:                                            "443"
+      type:                                               "ingress"
+
+  + module.eks.aws_security_group_rule.workers_ingress_self
+      id:                                                 <computed>
+      description:                                        "Allow node to communicate with each other."
+      from_port:                                          "0"
+      protocol:                                           "-1"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${aws_security_group.workers.id}"
+      to_port:                                            "65535"
+      type:                                               "ingress"
+
+  + module.eks.local_file.config_map_aws_auth
+      id:                                                 <computed>
+      content:                                            "${data.template_file.config_map_aws_auth.rendered}"
+      filename:                                           "./config-map-aws-auth_poi-eks-cluster.yaml"
+
+  + module.eks.local_file.kubeconfig
+      id:                                                 <computed>
+      content:                                            "${data.template_file.kubeconfig.rendered}"
+      filename:                                           "./kubeconfig_poi-eks-cluster"
+
+  + module.eks.null_resource.tags_as_list_of_maps
+      id:                                                 <computed>
+      triggers.%:                                         "3"
+      triggers.key:                                       "Environment"
+      triggers.propagate_at_launch:                       "true"
+      triggers.value:                                     "poi-eks-env"
+
+  + module.eks.null_resource.update_config_map_aws_auth
+      id:                                                 <computed>
+      triggers.%:                                         <computed>
+
+
+Plan: 25 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> terraform apply
+data.aws_caller_identity.current: Refreshing state...
+data.aws_region.current: Refreshing state...
+data.aws_iam_policy_document.cluster_assume_role_policy: Refreshing state...
+data.aws_ami.eks_worker: Refreshing state...
+data.aws_iam_policy_document.workers_assume_role_policy: Refreshing state...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+ <= module.eks.data.aws_iam_policy_document.worker_autoscaling
+      id:                                                 <computed>
+      json:                                               <computed>
+      statement.#:                                        "2"
+      statement.0.actions.#:                              "5"
+      statement.0.actions.1274732150:                     "autoscaling:DescribeAutoScalingGroups"
+      statement.0.actions.2448883636:                     "autoscaling:DescribeAutoScalingInstances"
+      statement.0.actions.2555065653:                     "autoscaling:DescribeLaunchConfigurations"
+      statement.0.actions.3701464416:                     "autoscaling:DescribeTags"
+      statement.0.actions.4281419483:                     "autoscaling:GetAsgForInstance"
+      statement.0.effect:                                 "Allow"
+      statement.0.resources.#:                            "1"
+      statement.0.resources.2679715827:                   "*"
+      statement.0.sid:                                    "eksWorkerAutoscalingAll"
+      statement.1.actions.#:                              "3"
+      statement.1.actions.1536675971:                     "autoscaling:UpdateAutoScalingGroup"
+      statement.1.actions.3469696720:                     "autoscaling:TerminateInstanceInAutoScalingGroup"
+      statement.1.actions.557626329:                      "autoscaling:SetDesiredCapacity"
+      statement.1.condition.#:                            "2"
+      statement.1.condition.3636405986.test:              "StringEquals"
+      statement.1.condition.3636405986.values.#:          "1"
+      statement.1.condition.3636405986.values.4043113848: "true"
+      statement.1.condition.3636405986.variable:          "autoscaling:ResourceTag/k8s.io/cluster-autoscaler/enabled"
+      statement.1.condition.4028998177.test:              "StringEquals"
+      statement.1.condition.4028998177.values.#:          "1"
+      statement.1.condition.4028998177.values.653127311:  "owned"
+      statement.1.condition.4028998177.variable:          "autoscaling:ResourceTag/kubernetes.io/cluster/poi-eks-cluster"
+      statement.1.effect:                                 "Allow"
+      statement.1.resources.#:                            "1"
+      statement.1.resources.2679715827:                   "*"
+      statement.1.sid:                                    "eksWorkerAutoscalingOwn"
+
+ <= module.eks.data.template_file.config_map_aws_auth
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n${wor
+ker_role_arn}\n${map_roles}\n  mapUsers: |\n${map_users}\n  mapAccounts: |\n${map_accounts}\n"
+      vars.%:                                             <computed>
+
+ <= module.eks.data.template_file.kubeconfig
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "apiVersion: v1\npreferences: {}\nkind: Config\n\nclusters:\n- cluster:\n    server: ${endpoint}\n    certificate-au
+thority-data: ${cluster_auth_base64}\n  name: ${kubeconfig_name}\n\ncontexts:\n- context:\n    cluster: ${kubeconfig_name}\n    user: ${kubeconfig_name}\n  name: ${kubeconfig
+_name}\n\ncurrent-context: ${kubeconfig_name}\n\nusers:\n- name: ${kubeconfig_name}\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1alpha1\n      comman
+d: ${aws_authenticator_command}\n      args:\n        - \"token\"\n        - \"-i\"\n        - \"${cluster_name}\"\n${aws_authenticator_additional_args}\n${aws_authenticator_
+env_variables}\n"
+      vars.%:                                             <computed>
+
+ <= module.eks.data.template_file.userdata
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "#!/bin/bash -xe\n\n# Allow user supplied pre userdata code\n${pre_userdata}\n\n# Bootstrap and join the cluster\n/e
+tc/eks/bootstrap.sh --b64-cluster-ca '${cluster_auth_base64}' --apiserver-endpoint '${endpoint}' --kubelet-extra-args '${kubelet_extra_args}' '${cluster_name}'\n\n# Allow use
+r supplied userdata code\n${additional_userdata}\n"
+      vars.%:                                             <computed>
+
+ <= module.eks.data.template_file.worker_role_arns
+      id:                                                 <computed>
+      rendered:                                           <computed>
+      template:                                           "    - rolearn: ${worker_role_arn}\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - syst
+em:bootstrappers\n        - system:nodes\n"
+      vars.%:                                             <computed>
+
+  + module.eks.aws_autoscaling_group.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      availability_zones.#:                               <computed>
+      default_cooldown:                                   <computed>
+      desired_capacity:                                   "0"
+      force_delete:                                       "false"
+      health_check_grace_period:                          "300"
+      health_check_type:                                  <computed>
+      launch_configuration:                               "${element(aws_launch_configuration.workers.*.id, count.index)}"
+      load_balancers.#:                                   <computed>
+      max_size:                                           "0"
+      metrics_granularity:                                "1Minute"
+      min_size:                                           "0"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster-default"
+      protect_from_scale_in:                              "false"
+      service_linked_role_arn:                            <computed>
+      tags.#:                                             <computed>
+      target_group_arns.#:                                <computed>
+      vpc_zone_identifier.#:                              <computed>
+      wait_for_capacity_timeout:                          "10m"
+
+  + module.eks.aws_eks_cluster.this
+      id:                                                 <computed>
+      arn:                                                <computed>
+      certificate_authority.#:                            <computed>
+      created_at:                                         <computed>
+      endpoint:                                           <computed>
+      name:                                               "poi-eks-cluster"
+      platform_version:                                   <computed>
+      role_arn:                                           "${aws_iam_role.cluster.arn}"
+      version:                                            "1.10"
+      vpc_config.#:                                       "1"
+      vpc_config.0.security_group_ids.#:                  <computed>
+      vpc_config.0.subnet_ids.#:                          "3"
+      vpc_config.0.subnet_ids.1737027237:                 "subnet-0f90d4b2597e54dc9"
+      vpc_config.0.subnet_ids.2424429063:                 "subnet-037ac1c0e6a3ba2fb"
+      vpc_config.0.subnet_ids.3914643950:                 "subnet-093f483dc98504530"
+      vpc_config.0.vpc_id:                                <computed>
+
+  + module.eks.aws_iam_instance_profile.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      create_date:                                        <computed>
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      path:                                               "/"
+      role:                                               "${lookup(var.worker_groups[count.index], \"iam_role_id\",  lookup(local.workers_group_defaults, \"iam_role_id\"))}"
+      roles.#:                                            <computed>
+      unique_id:                                          <computed>
+
+  + module.eks.aws_iam_policy.worker_autoscaling
+      id:                                                 <computed>
+      arn:                                                <computed>
+      description:                                        "EKS worker node autoscaling policy for cluster poi-eks-cluster"
+      name:                                               <computed>
+      name_prefix:                                        "eks-worker-autoscaling-poi-eks-cluster"
+      path:                                               "/"
+      policy:                                             "${data.aws_iam_policy_document.worker_autoscaling.json}"
+
+  + module.eks.aws_iam_role.cluster
+      id:                                                 <computed>
+      arn:                                                <computed>
+      assume_role_policy:                                 "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSClusterAssumeRole\",\n      \"Eff
+ect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"eks.amazonaws.com\"\n      }\n    }\n  ]\n}"
+      create_date:                                        <computed>
+      force_detach_policies:                              "false"
+      max_session_duration:                               "3600"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      path:                                               "/"
+      unique_id:                                          <computed>
+
+  + module.eks.aws_iam_role.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      assume_role_policy:                                 "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSWorkerAssumeRole\",\n      \"Effe
+ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}"
+      create_date:                                        <computed>
+      force_detach_policies:                              "false"
+      max_session_duration:                               "3600"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      path:                                               "/"
+      unique_id:                                          <computed>
+
+  + module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      role:                                               "${aws_iam_role.cluster.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+      role:                                               "${aws_iam_role.cluster.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy
+      id:                                                 <computed>
+      policy_arn:                                         "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_iam_role_policy_attachment.workers_autoscaling
+      id:                                                 <computed>
+      policy_arn:                                         "${aws_iam_policy.worker_autoscaling.arn}"
+      role:                                               "${aws_iam_role.workers.name}"
+
+  + module.eks.aws_launch_configuration.workers
+      id:                                                 <computed>
+      associate_public_ip_address:                        "false"
+      ebs_block_device.#:                                 <computed>
+      ebs_optimized:                                      "false"
+      enable_monitoring:                                  "false"
+      iam_instance_profile:                               "${element(aws_iam_instance_profile.workers.*.id, count.index)}"
+      image_id:                                           "${lookup(var.worker_groups[count.index], \"ami_id\", local.workers_group_defaults[\"ami_id\"])}"
+      instance_type:                                      "${lookup(var.worker_groups[count.index], \"instance_type\", local.workers_group_defaults[\"instance_type\"])}"
+      key_name:                                           "${lookup(var.worker_groups[count.index], \"key_name\", local.workers_group_defaults[\"key_name\"])}"
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster-default"
+      placement_tenancy:                                  "${lookup(var.worker_groups[count.index], \"placement_tenancy\", local.workers_group_defaults[\"placement_tenancy\"]
+)}"
+      root_block_device.#:                                "1"
+      root_block_device.0.delete_on_termination:          "true"
+      root_block_device.0.iops:                           "0"
+      root_block_device.0.volume_size:                    "0"
+      root_block_device.0.volume_type:                    "${lookup(var.worker_groups[count.index], \"root_volume_type\", local.workers_group_defaults[\"root_volume_type\"])}
+"
+      security_groups.#:                                  <computed>
+      spot_price:                                         "${lookup(var.worker_groups[count.index], \"spot_price\", local.workers_group_defaults[\"spot_price\"])}"
+      user_data_base64:                                   "${base64encode(element(data.template_file.userdata.*.rendered, count.index))}"
+
+  + module.eks.aws_security_group.cluster
+      id:                                                 <computed>
+      arn:                                                <computed>
+      description:                                        "EKS cluster security group."
+      egress.#:                                           <computed>
+      ingress.#:                                          <computed>
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      owner_id:                                           <computed>
+      revoke_rules_on_delete:                             "false"
+      tags.%:                                             "2"
+      tags.Environment:                                   "poi-eks-env"
+      tags.Name:                                          "poi-eks-cluster-eks_cluster_sg"
+      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+
+  + module.eks.aws_security_group.workers
+      id:                                                 <computed>
+      arn:                                                <computed>
+      description:                                        "Security group for all nodes in the cluster."
+      egress.#:                                           <computed>
+      ingress.#:                                          <computed>
+      name:                                               <computed>
+      name_prefix:                                        "poi-eks-cluster"
+      owner_id:                                           <computed>
+      revoke_rules_on_delete:                             "false"
+      tags.%:                                             "3"
+      tags.Environment:                                   "poi-eks-env"
+      tags.Name:                                          "poi-eks-cluster-eks_worker_sg"
+      tags.kubernetes.io/cluster/poi-eks-cluster:         "owned"
+      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+
+  + module.eks.aws_security_group_rule.cluster_egress_internet
+      id:                                                 <computed>
+      cidr_blocks.#:                                      "1"
+      cidr_blocks.0:                                      "0.0.0.0/0"
+      description:                                        "Allow cluster egress access to the Internet."
+      from_port:                                          "0"
+      protocol:                                           "-1"
+      security_group_id:                                  "${aws_security_group.cluster.id}"
+      self:                                               "false"
+      source_security_group_id:                           <computed>
+      to_port:                                            "0"
+      type:                                               "egress"
+
+  + module.eks.aws_security_group_rule.cluster_https_worker_ingress
+      id:                                                 <computed>
+      description:                                        "Allow pods to communicate with the EKS cluster API."
+      from_port:                                          "443"
+      protocol:                                           "tcp"
+      security_group_id:                                  "${aws_security_group.cluster.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${local.worker_security_group_id}"
+      to_port:                                            "443"
+      type:                                               "ingress"
+
+  + module.eks.aws_security_group_rule.workers_egress_internet
+      id:                                                 <computed>
+      cidr_blocks.#:                                      "1"
+      cidr_blocks.0:                                      "0.0.0.0/0"
+      description:                                        "Allow nodes all egress to the Internet."
+      from_port:                                          "0"
+      protocol:                                           "-1"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           <computed>
+      to_port:                                            "0"
+      type:                                               "egress"
+
+  + module.eks.aws_security_group_rule.workers_ingress_cluster
+      id:                                                 <computed>
+      description:                                        "Allow workers Kubelets and pods to receive communication from the cluster control plane."
+      from_port:                                          "1025"
+      protocol:                                           "tcp"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${local.cluster_security_group_id}"
+      to_port:                                            "65535"
+      type:                                               "ingress"
+
+  + module.eks.aws_security_group_rule.workers_ingress_cluster_https
+      id:                                                 <computed>
+      description:                                        "Allow pods running extension API servers on port 443 to receive communication from cluster control plane."
+      from_port:                                          "443"
+      protocol:                                           "tcp"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${local.cluster_security_group_id}"
+      to_port:                                            "443"
+      type:                                               "ingress"
+
+  + module.eks.aws_security_group_rule.workers_ingress_self
+      id:                                                 <computed>
+      description:                                        "Allow node to communicate with each other."
+      from_port:                                          "0"
+      protocol:                                           "-1"
+      security_group_id:                                  "${aws_security_group.workers.id}"
+      self:                                               "false"
+      source_security_group_id:                           "${aws_security_group.workers.id}"
+      to_port:                                            "65535"
+      type:                                               "ingress"
+
+  + module.eks.local_file.config_map_aws_auth
+      id:                                                 <computed>
+      content:                                            "${data.template_file.config_map_aws_auth.rendered}"
+      filename:                                           "./config-map-aws-auth_poi-eks-cluster.yaml"
+
+  + module.eks.local_file.kubeconfig
+      id:                                                 <computed>
+      content:                                            "${data.template_file.kubeconfig.rendered}"
+      filename:                                           "./kubeconfig_poi-eks-cluster"
+
+  + module.eks.null_resource.tags_as_list_of_maps
+      id:                                                 <computed>
+      triggers.%:                                         "3"
+      triggers.key:                                       "Environment"
+      triggers.propagate_at_launch:                       "true"
+      triggers.value:                                     "poi-eks-env"
+
+  + module.eks.null_resource.update_config_map_aws_auth
+      id:                                                 <computed>
+      triggers.%:                                         <computed>
+
+
+Plan: 25 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.eks.null_resource.tags_as_list_of_maps: Creating...
+  triggers.%:                   "" => "3"
+  triggers.key:                 "" => "Environment"
+  triggers.propagate_at_launch: "" => "true"
+  triggers.value:               "" => "poi-eks-env"
+module.eks.null_resource.tags_as_list_of_maps: Creation complete after 0s (ID: 1001379448879645309)
+module.eks.aws_security_group.cluster: Creating...
+  arn:                    "" => "<computed>"
+  description:            "" => "EKS cluster security group."
+  egress.#:               "" => "<computed>"
+  ingress.#:              "" => "<computed>"
+  name:                   "" => "<computed>"
+  name_prefix:            "" => "poi-eks-cluster"
+  owner_id:               "" => "<computed>"
+  revoke_rules_on_delete: "" => "false"
+  tags.%:                 "" => "2"
+  tags.Environment:       "" => "poi-eks-env"
+  tags.Name:              "" => "poi-eks-cluster-eks_cluster_sg"
+  vpc_id:                 "" => "vpc-0b6e66db6a32a37a8"
+module.eks.aws_iam_role.cluster: Creating...
+  arn:                   "" => "<computed>"
+  assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSClusterAssumeRole\",\n      \"Effect\": \"Allow\",\n      \"
+Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"eks.amazonaws.com\"\n      }\n    }\n  ]\n}"
+  create_date:           "" => "<computed>"
+  force_detach_policies: "" => "false"
+  max_session_duration:  "" => "3600"
+  name:                  "" => "<computed>"
+  name_prefix:           "" => "poi-eks-cluster"
+  path:                  "" => "/"
+  unique_id:             "" => "<computed>"
+module.eks.aws_iam_role.cluster: Creation complete after 4s (ID: poi-eks-cluster20181112121241219800000001)
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Creating...
+  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+  role:       "" => "poi-eks-cluster20181112121241219800000001"
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Creating...
+  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role:       "" => "poi-eks-cluster20181112121241219800000001"
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Creation complete after 4s (ID: poi-eks-cluster20181112121241219800000001-20181112121246254800000003
+)
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Creation complete after 4s (ID: poi-eks-cluster20181112121241219800000001-20181112121246392300000004
+)
+module.eks.aws_security_group.cluster: Creation complete after 9s (ID: sg-035d7e4a608a20e6f)
+module.eks.aws_security_group_rule.cluster_egress_internet: Creating...
+  cidr_blocks.#:            "" => "1"
+  cidr_blocks.0:            "" => "0.0.0.0/0"
+  description:              "" => "Allow cluster egress access to the Internet."
+  from_port:                "" => "0"
+  protocol:                 "" => "-1"
+  security_group_id:        "" => "sg-035d7e4a608a20e6f"
+  self:                     "" => "false"
+  source_security_group_id: "" => "<computed>"
+  to_port:                  "" => "0"
+  type:                     "" => "egress"
+module.eks.aws_eks_cluster.this: Creating...
+  arn:                                        "" => "<computed>"
+  certificate_authority.#:                    "" => "<computed>"
+  created_at:                                 "" => "<computed>"
+  endpoint:                                   "" => "<computed>"
+  name:                                       "" => "poi-eks-cluster"
+  platform_version:                           "" => "<computed>"
+  role_arn:                                   "" => "arn:aws:iam::077978206904:role/poi-eks-cluster20181112121241219800000001"
+  version:                                    "" => "1.10"
+  vpc_config.#:                               "" => "1"
+  vpc_config.0.security_group_ids.#:          "" => "1"
+  vpc_config.0.security_group_ids.3121642222: "" => "sg-035d7e4a608a20e6f"
+  vpc_config.0.subnet_ids.#:                  "" => "3"
+  vpc_config.0.subnet_ids.1737027237:         "" => "subnet-0f90d4b2597e54dc9"
+  vpc_config.0.subnet_ids.2424429063:         "" => "subnet-037ac1c0e6a3ba2fb"
+  vpc_config.0.subnet_ids.3914643950:         "" => "subnet-093f483dc98504530"
+  vpc_config.0.vpc_id:                        "" => "<computed>"
+module.eks.aws_security_group_rule.cluster_egress_internet: Creation complete after 4s (ID: sgrule-1918748854)
+module.eks.aws_eks_cluster.this: Still creating... (10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (1m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (1m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (1m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (1m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (1m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (1m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (2m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (2m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (2m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (2m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (2m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (2m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (3m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (3m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (3m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (3m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (3m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (3m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (4m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (4m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (4m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (4m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (4m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (4m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (5m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (5m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (5m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (5m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (5m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (5m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (6m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (6m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (6m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (6m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (6m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (6m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (7m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (7m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (7m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (7m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (7m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (7m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (8m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (8m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (8m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (8m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (8m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (8m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (9m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (9m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (9m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (9m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (9m40s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (9m50s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (10m0s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (10m10s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (10m20s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (10m30s elapsed)
+module.eks.aws_eks_cluster.this: Still creating... (10m40s elapsed)
+module.eks.aws_eks_cluster.this: Creation complete after 10m44s (ID: poi-eks-cluster)
+module.eks.aws_iam_role.workers: Creating...
+  arn:                   "" => "<computed>"
+  assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSWorkerAssumeRole\",\n      \"Effect\": \"Allow\",\n      \"A
+ction\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}"
+  create_date:           "" => "<computed>"
+  force_detach_policies: "" => "false"
+  max_session_duration:  "" => "3600"
+  name:                  "" => "<computed>"
+  name_prefix:           "" => "poi-eks-cluster"
+  path:                  "" => "/"
+  unique_id:             "" => "<computed>"
+module.eks.aws_security_group.workers: Creating...
+  arn:                                        "" => "<computed>"
+  description:                                "" => "Security group for all nodes in the cluster."
+  egress.#:                                   "" => "<computed>"
+  ingress.#:                                  "" => "<computed>"
+  name:                                       "" => "<computed>"
+  name_prefix:                                "" => "poi-eks-cluster"
+  owner_id:                                   "" => "<computed>"
+  revoke_rules_on_delete:                     "" => "false"
+  tags.%:                                     "" => "3"
+  tags.Environment:                           "" => "poi-eks-env"
+  tags.Name:                                  "" => "poi-eks-cluster-eks_worker_sg"
+  tags.kubernetes.io/cluster/poi-eks-cluster: "" => "owned"
+  vpc_id:                                     "" => "vpc-0b6e66db6a32a37a8"
+module.eks.data.template_file.kubeconfig: Refreshing state...
+module.eks.data.aws_iam_policy_document.worker_autoscaling: Refreshing state...
+module.eks.aws_iam_policy.worker_autoscaling: Creating...
+  arn:         "" => "<computed>"
+  description: "" => "EKS worker node autoscaling policy for cluster poi-eks-cluster"
+  name:        "" => "<computed>"
+  name_prefix: "" => "eks-worker-autoscaling-poi-eks-cluster"
+  path:        "" => "/"
+  policy:      "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"eksWorkerAutoscalingAll\",\n      \"Effect\": \"Allow\",\n      \"Action\
+": [\n        \"autoscaling:GetAsgForInstance\",\n        \"autoscaling:DescribeTags\",\n        \"autoscaling:DescribeLaunchConfigurations\",\n        \"autoscaling:Describe
+AutoScalingInstances\",\n        \"autoscaling:DescribeAutoScalingGroups\"\n      ],\n      \"Resource\": \"*\"\n    },\n    {\n      \"Sid\": \"eksWorkerAutoscalingOwn\",\n
+     \"Effect\": \"Allow\",\n      \"Action\": [\n        \"autoscaling:UpdateAutoScalingGroup\",\n        \"autoscaling:TerminateInstanceInAutoScalingGroup\",\n        \"aut
+oscaling:SetDesiredCapacity\"\n      ],\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"autoscaling:ResourceTag/k8s.io/cluster-a
+utoscaler/enabled\": \"true\",\n          \"autoscaling:ResourceTag/kubernetes.io/cluster/poi-eks-cluster\": \"owned\"\n        }\n      }\n    }\n  ]\n}"
+module.eks.local_file.kubeconfig: Creating...
+  content:  "" => "apiVersion: v1\npreferences: {}\nkind: Config\n\nclusters:\n- cluster:\n    server: https://095CB970CDEEB69F96F7E97ED12FEB9E.sk1.eu-west-1.eks.amazonaws.co
+m\n    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjR
+YRFRFNE1URXhNakV5TWpBeU9Wb1hEVEk0TVRFd09URXlNakF5T1Zvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBT0NiCjFjeTFabUdkMVpJQ
+3ZxRXNoVFkrTkJKWjd2RWkvWWtCcUZHVzlqN21NT1VFS2VsWFQ3Wng5SDJIL1ZLOFFaTGQKa2d5TVV3d0hTaE9GTU5yWlJSTnZuNi83U3dCK2ErNXR1b3dOWCsyd2kxODE3V1lLZEN6bTYwalpJT0l2NHBXYQpBRlljKzdiQUJpenI
+1OUJFMUdtSmwzQTlsc21oc1AvZmU4Zk5QY0VmYTdCMTJHcmljZDM1OEl6MHVwd0xDSDloCmIzVTE2UER1NzhWTWhFNlVDWm1iZ2xPeG94dDBkZTExdVo0STBacU94RmhycEdZT0VoV21FT3BDYVBHZlB4c0UKMWhZRTBRcFVtSjZTN
+09RTVlDU3dsekdyRjRFblpNZ0pCbFdaL2JhTjdmYkhTaFNwbnVqRGxIekRWb0JkTWN4WgpZUCtvRk5xV2Q4YzQwTW1vOWlVQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0R
+RWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFNZzdXS0Q2ZXdiSUFqMEVGYkJmSDV6UUtabG4KZGxzZTd3ZFlRemIrSHZla05yUnE3eDgwNzB3ZndtenZyZDdUNm5rTkpwbG5xOVRlWjV6Y3o5RXQ4SGlMRGp0cgpaenhwTGlJRndjK0NGU
+3BGWmNVSUJ4ZUFsRVlPRmVoRjFTSXNJcjRobHRib05MbmJiWEhEVU90OTRzVGwrREJ6CitpdWthSjBJV3RkR1VvOFVmcXJTNG14YS8yL1hCMzBzeFJiOGNLWWlMdU5yZDBtUTFrV0g5alc5T1NjVDVRNFQKMUw3VmxzS3BCZTRhWFd
+CZzFUZld4M2o2STdVZlQwS3lENnQ2NmsvNHlKZzdqSUhVc2VFa0JSbWsvWllmMjd2egp2QktsanJWaHNWNjBSanhqSXlaM251YXdOdVNzWXZMdzFkaHMyb3V0RGw2RytHODdEOUwwbGw3cTdOWT0KLS0tLS1FTkQgQ0VSVElGSUNBV
+EUtLS0tLQo=\n  name: eks_poi-eks-cluster\n\ncontexts:\n- context:\n    cluster: eks_poi-eks-cluster\n    user: eks_poi-eks-cluster\n  name: eks_poi-eks-cluster\n\ncurrent-con
+text: eks_poi-eks-cluster\n\nusers:\n- name: eks_poi-eks-cluster\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1alpha1\n      command: aws-iam-authenti
+cator\n      args:\n        - \"token\"\n        - \"-i\"\n        - \"poi-eks-cluster\"\n\n\n"
+  filename: "" => "./kubeconfig_poi-eks-cluster"
+module.eks.local_file.kubeconfig: Creation complete after 0s (ID: ba2746ccf23e7d7a8982bbcb0affc0ad8fb5b1b0)
+module.eks.aws_iam_role.workers: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005)
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Creating...
+  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role:       "" => "poi-eks-cluster20181112122333980500000005"
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Creating...
+  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role:       "" => "poi-eks-cluster20181112122333980500000005"
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Creating...
+  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role:       "" => "poi-eks-cluster20181112122333980500000005"
+module.eks.aws_iam_instance_profile.workers: Creating...
+  arn:         "" => "<computed>"
+  create_date: "" => "<computed>"
+  name:        "" => "<computed>"
+  name_prefix: "" => "poi-eks-cluster"
+  path:        "" => "/"
+  role:        "" => "poi-eks-cluster20181112122333980500000005"
+  roles.#:     "" => "<computed>"
+  unique_id:   "" => "<computed>"
+module.eks.data.template_file.userdata: Refreshing state...
+module.eks.aws_iam_policy.worker_autoscaling: Creation complete after 5s (ID: arn:aws:iam::077978206904:policy/eks-wo...-eks-cluster20181112122333998500000007)
+module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Creating...
+  policy_arn: "" => "arn:aws:iam::077978206904:policy/eks-worker-autoscaling-poi-eks-cluster20181112122333998500000007"
+  role:       "" => "poi-eks-cluster20181112122333980500000005"
+module.eks.aws_iam_instance_profile.workers: Creation complete after 4s (ID: poi-eks-cluster20181112122337680100000008)
+module.eks.data.template_file.worker_role_arns: Refreshing state...
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005-20181112122339204700000
+009)
+module.eks.data.template_file.config_map_aws_auth: Refreshing state...
+module.eks.local_file.config_map_aws_auth: Creating...
+  content:  "" => "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:iam::077978206904:role
+/poi-eks-cluster20181112122333980500000005\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - system:nodes\n\n\n  ma
+pUsers: |\n\n  mapAccounts: |\n\n"
+  filename: "" => "./config-map-aws-auth_poi-eks-cluster.yaml"
+module.eks.null_resource.update_config_map_aws_auth: Creating...
+  triggers.%:                   "" => "1"
+  triggers.config_map_rendered: "" => "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:ia
+m::077978206904:role/poi-eks-cluster20181112122333980500000005\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - sy
+stem:nodes\n\n\n  mapUsers: |\n\n  mapAccounts: |\n\n"
+module.eks.null_resource.update_config_map_aws_auth: Provisioning with 'local-exec'...
+module.eks.local_file.config_map_aws_auth: Creation complete after 0s (ID: 9f829ffbc7c8108fcf039c5b626166d63c25bc29)
+module.eks.null_resource.update_config_map_aws_auth (local-exec): Executing: ["cmd" "/C" "kubectl apply -f ./config-map-aws-auth_poi-eks-cluster.yaml --kubeconfig ./kubeconfi
+g_poi-eks-cluster"]
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005-20181112122339
+32800000000b)
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Creation complete after 5s (ID: poi-eks-cluster20181112122333980500000005-2018111212233922970000000a)
+module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005-2018111212234030440000000c)
+module.eks.aws_security_group.workers: Creation complete after 10s (ID: sg-0e4fdf39129a50902)
+module.eks.aws_security_group_rule.cluster_https_worker_ingress: Creating...
+  description:              "" => "Allow pods to communicate with the EKS cluster API."
+  from_port:                "" => "443"
+  protocol:                 "" => "tcp"
+  security_group_id:        "" => "sg-035d7e4a608a20e6f"
+  self:                     "" => "false"
+  source_security_group_id: "" => "sg-0e4fdf39129a50902"
+  to_port:                  "" => "443"
+  type:                     "" => "ingress"
+module.eks.aws_security_group_rule.workers_ingress_cluster_https: Creating...
+  description:              "" => "Allow pods running extension API servers on port 443 to receive communication from cluster control plane."
+  from_port:                "" => "443"
+  protocol:                 "" => "tcp"
+  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  self:                     "" => "false"
+  source_security_group_id: "" => "sg-035d7e4a608a20e6f"
+  to_port:                  "" => "443"
+  type:                     "" => "ingress"
+module.eks.aws_security_group_rule.workers_egress_internet: Creating...
+  cidr_blocks.#:            "" => "1"
+  cidr_blocks.0:            "" => "0.0.0.0/0"
+  description:              "" => "Allow nodes all egress to the Internet."
+  from_port:                "" => "0"
+  protocol:                 "" => "-1"
+  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  self:                     "" => "false"
+  source_security_group_id: "" => "<computed>"
+  to_port:                  "" => "0"
+  type:                     "" => "egress"
+module.eks.aws_security_group_rule.workers_ingress_self: Creating...
+  description:              "" => "Allow node to communicate with each other."
+  from_port:                "" => "0"
+  protocol:                 "" => "-1"
+  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  self:                     "" => "false"
+  source_security_group_id: "" => "sg-0e4fdf39129a50902"
+  to_port:                  "" => "65535"
+  type:                     "" => "ingress"
+module.eks.aws_security_group_rule.workers_ingress_cluster: Creating...
+  description:              "" => "Allow workers Kubelets and pods to receive communication from the cluster control plane."
+  from_port:                "" => "1025"
+  protocol:                 "" => "tcp"
+  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  self:                     "" => "false"
+  source_security_group_id: "" => "sg-035d7e4a608a20e6f"
+  to_port:                  "" => "65535"
+  type:                     "" => "ingress"
+module.eks.aws_launch_configuration.workers: Creating...
+  associate_public_ip_address:               "" => "false"
+  ebs_block_device.#:                        "" => "<computed>"
+  ebs_optimized:                             "" => "true"
+  enable_monitoring:                         "" => "true"
+  iam_instance_profile:                      "" => "poi-eks-cluster20181112122337680100000008"
+  image_id:                                  "" => "ami-00c3b2d35bddd4f5c"
+  instance_type:                             "" => "m4.large"
+  key_name:                                  "" => "<computed>"
+  name:                                      "" => "<computed>"
+  name_prefix:                               "" => "poi-eks-cluster-default"
+  root_block_device.#:                       "" => "1"
+  root_block_device.0.delete_on_termination: "" => "true"
+  root_block_device.0.iops:                  "" => "0"
+  root_block_device.0.volume_size:           "" => "100"
+  root_block_device.0.volume_type:           "" => "gp2"
+  security_groups.#:                         "" => "1"
+  security_groups.565454835:                 "" => "sg-0e4fdf39129a50902"
+  user_data_base64:                          "" => "IyEvYmluL2Jhc2ggLXhlCgojIEFsbG93IHVzZXIgc3VwcGxpZWQgcHJlIHVzZXJkYXRhIGNvZGUKCgojIEJvb3RzdHJhcCBhbmQgam9pbiB0aGUgY2x1c3Rlcg
+ovZXRjL2Vrcy9ib290c3RyYXAuc2ggLS1iNjQtY2x1c3Rlci1jYSAnTFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVTjVSRU5EUVdKRFowRjNTVUpCWjBsQ1FVUkJUa0puYTNGb2EybEhPWGN3UWtGUmMw
+WkJSRUZXVFZKTmQwVlJXVVJXVVZGRVJYZHdjbVJYU213S1kyMDFiR1JIVm5wTlFqUllSRlJGTkUxVVJYaE5ha1Y1VFdwQmVVOVdiMWhFVkVrMFRWUkZkMDlVUlhsTmFrRjVUMVp2ZDBaVVJWUk5Ra1ZIUVRGVlJRcEJlRTFMWVROV2
+FWcFlTblZhV0ZKc1kzcERRMEZUU1hkRVVWbEtTMjlhU1doMlkwNUJVVVZDUWxGQlJHZG5SVkJCUkVORFFWRnZRMmRuUlVKQlQwTmlDakZqZVRGYWJVZGtNVnBKUTNaeFJYTm9WRmtyVGtKS1dqZDJSV2t2V1d0Q2NVWkhWemxxTjIx
+TlQxVkZTMlZzV0ZRM1duZzVTREpJTDFaTE9GRmFUR1FLYTJkNVRWVjNkMGhUYUU5R1RVNXlXbEpTVG5adU5pODNVM2RDSzJFck5YUjFiM2RPV0NzeWQya3hPREUzVjFsTFpFTjZiVFl3YWxwSlQwbDJOSEJYWVFwQlJsbGpLemRpUV
+VKcGVuSTFPVUpGTVVkdFNtd3pRVGxzYzIxb2MxQXZabVU0Wms1UVkwVm1ZVGRDTVRKSGNtbGpaRE0xT0VsNk1IVndkMHhEU0Rsb0NtSXpWVEUyVUVSMU56aFdUV2hGTmxWRFdtMWlaMnhQZUc5NGREQmtaVEV4ZFZvMFNUQmFjVTk0
+Um1oeWNFZFpUMFZvVjIxRlQzQkRZVkJIWmxCNGMwVUtNV2haUlRCUmNGVnRTalpUTjA5UlRWbERVM2RzZWtkeVJqUkZibHBOWjBwQ2JGZGFMMkpoVGpkbVlraFRhRk53Ym5WcVJHeElla1JXYjBKa1RXTjRXZ3BaVUN0dlJrNXhWMl
+E0WXpRd1RXMXZPV2xWUTBGM1JVRkJZVTFxVFVORmQwUm5XVVJXVWpCUVFWRklMMEpCVVVSQlowdHJUVUU0UjBFeFZXUkZkMFZDQ2k5M1VVWk5RVTFDUVdZNGQwUlJXVXBMYjFwSmFIWmpUa0ZSUlV4Q1VVRkVaMmRGUWtGTlp6ZFhT
+MFEyWlhkaVNVRnFNRVZHWWtKbVNEVjZVVXRhYkc0S1pHeHpaVGQzWkZsUmVtSXJTSFpsYTA1eVVuRTNlRGd3TnpCM1puZHRlblp5WkRkVU5tNXJUa3B3Ykc1eE9WUmxXalY2WTNvNVJYUTRTR2xNUkdwMGNncGFlbmh3VEdsSlJuZG
+pLME5HVTNCR1dtTlZTVUo0WlVGc1JWbFBSbVZvUmpGVFNYTkpjalJvYkhSaWIwNU1ibUppV0VoRVZVOTBPVFJ6Vkd3clJFSjZDaXRwZFd0aFNqQkpWM1JrUjFWdk9GVm1jWEpUTkcxNFlTOHlMMWhDTXpCemVGSmlPR05MV1dsTWRV
+NXlaREJ0VVRGclYwZzVhbGM1VDFOalZEVlJORlFLTVV3M1ZteHpTM0JDWlRSaFdGZENaekZVWmxkNE0ybzJTVGRWWmxRd1MzbEVOblEyTm1zdk5IbEtaemRxU1VoVmMyVkZhMEpTYldzdldsbG1NamQyZWdwMlFrdHNhbkpXYUhOV0
+5qQlNhbmhxU1hsYU0yNTFZWGRPZFZOeldYWk1kekZrYUhNeWIzVjBSR3cyUnl0SE9EZEVPVXd3Ykd3M2NUZE9XVDBLTFMwdExTMUZUa1FnUTBWU1ZFbEdTVU5CVkVVdExTMHRMUW89JyAtLWFwaXNlcnZlci1lbmRwb2ludCAnaHR0
+cHM6Ly8wOTVDQjk3MENERUVCNjlGOTZGN0U5N0VEMTJGRUI5RS5zazEuZXUtd2VzdC0xLmVrcy5hbWF6b25hd3MuY29tJyAtLWt1YmVsZXQtZXh0cmEtYXJncyAnJyAncG9pLWVrcy1jbHVzdGVyJwoKIyBBbGxvdyB1c2VyIHN1cH
+BsaWVkIHVzZXJkYXRhIGNvZGUKCg=="
+module.eks.aws_security_group_rule.workers_egress_internet: Creation complete after 3s (ID: sgrule-387485003)
+module.eks.aws_security_group_rule.cluster_https_worker_ingress: Creation complete after 3s (ID: sgrule-961352781)
+module.eks.aws_security_group_rule.workers_ingress_self: Creation complete after 7s (ID: sgrule-929716702)
+module.eks.null_resource.update_config_map_aws_auth: Still creating... (10s elapsed)
+module.eks.aws_security_group_rule.workers_ingress_cluster_https: Still creating... (10s elapsed)
+module.eks.aws_security_group_rule.workers_ingress_cluster: Still creating... (10s elapsed)
+module.eks.aws_launch_configuration.workers: Still creating... (10s elapsed)
+module.eks.aws_launch_configuration.workers: Creation complete after 10s (ID: poi-eks-cluster-default2018111212234615850000000d)
+module.eks.aws_autoscaling_group.workers: Creating...
+  arn:                            "" => "<computed>"
+  default_cooldown:               "" => "<computed>"
+  desired_capacity:               "" => "1"
+  force_delete:                   "" => "false"
+  health_check_grace_period:      "" => "300"
+  health_check_type:              "" => "<computed>"
+  launch_configuration:           "" => "poi-eks-cluster-default2018111212234615850000000d"
+  load_balancers.#:               "" => "<computed>"
+  max_size:                       "" => "3"
+  metrics_granularity:            "" => "1Minute"
+  min_size:                       "" => "1"
+  name:                           "" => "<computed>"
+  name_prefix:                    "" => "poi-eks-cluster-default"
+  protect_from_scale_in:          "" => "false"
+  service_linked_role_arn:        "" => "<computed>"
+  tags.#:                         "" => "4"
+  tags.0.%:                       "" => "3"
+  tags.0.key:                     "" => "Name"
+  tags.0.propagate_at_launch:     "" => "1"
+  tags.0.value:                   "" => "poi-eks-cluster-default-eks_asg"
+  tags.1.%:                       "" => "3"
+  tags.1.key:                     "" => "kubernetes.io/cluster/poi-eks-cluster"
+  tags.1.propagate_at_launch:     "" => "1"
+  tags.1.value:                   "" => "owned"
+  tags.2.%:                       "" => "3"
+  tags.2.key:                     "" => "k8s.io/cluster-autoscaler/disabled"
+  tags.2.propagate_at_launch:     "" => "0"
+  tags.2.value:                   "" => "true"
+  tags.3.%:                       "" => "3"
+  tags.3.key:                     "" => "Environment"
+  tags.3.propagate_at_launch:     "" => "1"
+  tags.3.value:                   "" => "poi-eks-env"
+  target_group_arns.#:            "" => "<computed>"
+  vpc_zone_identifier.#:          "" => "3"
+  vpc_zone_identifier.1523456390: "" => "subnet-0f90d4b2597e54dc9"
+  vpc_zone_identifier.833480210:  "" => "subnet-037ac1c0e6a3ba2fb"
+  vpc_zone_identifier.947301147:  "" => "subnet-093f483dc98504530"
+  wait_for_capacity_timeout:      "" => "10m"
+module.eks.aws_security_group_rule.workers_ingress_cluster_https: Creation complete after 11s (ID: sgrule-788543922)
+module.eks.aws_security_group_rule.workers_ingress_cluster: Creation complete after 15s (ID: sgrule-4252417876)
+module.eks.null_resource.update_config_map_aws_auth (local-exec): configmap "aws-auth" created
+module.eks.null_resource.update_config_map_aws_auth: Creation complete after 19s (ID: 2555271777902754812)
+module.eks.aws_autoscaling_group.workers: Still creating... (10s elapsed)
+module.eks.aws_autoscaling_group.workers: Still creating... (20s elapsed)
+module.eks.aws_autoscaling_group.workers: Still creating... (30s elapsed)
+module.eks.aws_autoscaling_group.workers: Still creating... (40s elapsed)
+module.eks.aws_autoscaling_group.workers: Still creating... (50s elapsed)
+module.eks.aws_autoscaling_group.workers: Creation complete after 52s (ID: poi-eks-cluster-default2018111212235445370000000e)
+
+Apply complete! Resources: 25 added, 0 changed, 0 destroyed.
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl get nodes
+NAME                 STATUS    ROLES     AGE       VERSION
+docker-for-desktop   Ready     master    64d       v1.10.3
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks>
