@@ -13,6 +13,7 @@ module "eks" {
   subnets 		= ["subnet-c11f05b6", "subnet-a850bce0", "subnet-8813e1ec", "subnet-a3685afa"]
   vpc_id 		= "vpc-3842495d"
   
+  worker_group_count = "2"
   worker_groups         = [{
                             "asg_desired_capacity" = "3",
                             "asg_max_size" = "4",
