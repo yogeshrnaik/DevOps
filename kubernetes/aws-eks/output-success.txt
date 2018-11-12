@@ -3,11 +3,11 @@ Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
 
+data.aws_iam_policy_document.workers_assume_role_policy: Refreshing state...
 data.aws_caller_identity.current: Refreshing state...
 data.aws_region.current: Refreshing state...
 data.aws_iam_policy_document.cluster_assume_role_policy: Refreshing state...
 data.aws_ami.eks_worker: Refreshing state...
-data.aws_iam_policy_document.workers_assume_role_policy: Refreshing state...
 
 ------------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ em:bootstrappers\n        - system:nodes\n"
       metrics_granularity:                                "1Minute"
       min_size:                                           "0"
       name:                                               <computed>
-      name_prefix:                                        "poi-eks-cluster-default"
+      name_prefix:                                        "poi-eks-cluster-0"
       protect_from_scale_in:                              "false"
       service_linked_role_arn:                            <computed>
       tags.#:                                             <computed>
@@ -117,10 +117,11 @@ em:bootstrappers\n        - system:nodes\n"
       version:                                            "1.10"
       vpc_config.#:                                       "1"
       vpc_config.0.security_group_ids.#:                  <computed>
-      vpc_config.0.subnet_ids.#:                          "3"
-      vpc_config.0.subnet_ids.1737027237:                 "subnet-0f90d4b2597e54dc9"
-      vpc_config.0.subnet_ids.2424429063:                 "subnet-037ac1c0e6a3ba2fb"
-      vpc_config.0.subnet_ids.3914643950:                 "subnet-093f483dc98504530"
+      vpc_config.0.subnet_ids.#:                          "4"
+      vpc_config.0.subnet_ids.360204655:                  "subnet-8813e1ec"
+      vpc_config.0.subnet_ids.4209864939:                 "subnet-a3685afa"
+      vpc_config.0.subnet_ids.4225826129:                 "subnet-a850bce0"
+      vpc_config.0.subnet_ids.459373779:                  "subnet-c11f05b6"
       vpc_config.0.vpc_id:                                <computed>
 
   + module.eks.aws_iam_instance_profile.workers
@@ -210,7 +211,7 @@ ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\
       instance_type:                                      "${lookup(var.worker_groups[count.index], \"instance_type\", local.workers_group_defaults[\"instance_type\"])}"
       key_name:                                           "${lookup(var.worker_groups[count.index], \"key_name\", local.workers_group_defaults[\"key_name\"])}"
       name:                                               <computed>
-      name_prefix:                                        "poi-eks-cluster-default"
+      name_prefix:                                        "poi-eks-cluster-0"
       placement_tenancy:                                  "${lookup(var.worker_groups[count.index], \"placement_tenancy\", local.workers_group_defaults[\"placement_tenancy\"]
 )}"
       root_block_device.#:                                "1"
@@ -236,7 +237,7 @@ ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\
       tags.%:                                             "2"
       tags.Environment:                                   "poi-eks-env"
       tags.Name:                                          "poi-eks-cluster-eks_cluster_sg"
-      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+      vpc_id:                                             "vpc-3842495d"
 
   + module.eks.aws_security_group.workers
       id:                                                 <computed>
@@ -252,7 +253,7 @@ ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\
       tags.Environment:                                   "poi-eks-env"
       tags.Name:                                          "poi-eks-cluster-eks_worker_sg"
       tags.kubernetes.io/cluster/poi-eks-cluster:         "owned"
-      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+      vpc_id:                                             "vpc-3842495d"
 
   + module.eks.aws_security_group_rule.cluster_egress_internet
       id:                                                 <computed>
@@ -357,9 +358,9 @@ can't guarantee that exactly these actions will be performed if
 PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> terraform apply
 data.aws_caller_identity.current: Refreshing state...
 data.aws_region.current: Refreshing state...
-data.aws_iam_policy_document.cluster_assume_role_policy: Refreshing state...
 data.aws_ami.eks_worker: Refreshing state...
 data.aws_iam_policy_document.workers_assume_role_policy: Refreshing state...
+data.aws_iam_policy_document.cluster_assume_role_policy: Refreshing state...
 
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
@@ -447,7 +448,7 @@ em:bootstrappers\n        - system:nodes\n"
       metrics_granularity:                                "1Minute"
       min_size:                                           "0"
       name:                                               <computed>
-      name_prefix:                                        "poi-eks-cluster-default"
+      name_prefix:                                        "poi-eks-cluster-0"
       protect_from_scale_in:                              "false"
       service_linked_role_arn:                            <computed>
       tags.#:                                             <computed>
@@ -467,10 +468,11 @@ em:bootstrappers\n        - system:nodes\n"
       version:                                            "1.10"
       vpc_config.#:                                       "1"
       vpc_config.0.security_group_ids.#:                  <computed>
-      vpc_config.0.subnet_ids.#:                          "3"
-      vpc_config.0.subnet_ids.1737027237:                 "subnet-0f90d4b2597e54dc9"
-      vpc_config.0.subnet_ids.2424429063:                 "subnet-037ac1c0e6a3ba2fb"
-      vpc_config.0.subnet_ids.3914643950:                 "subnet-093f483dc98504530"
+      vpc_config.0.subnet_ids.#:                          "4"
+      vpc_config.0.subnet_ids.360204655:                  "subnet-8813e1ec"
+      vpc_config.0.subnet_ids.4209864939:                 "subnet-a3685afa"
+      vpc_config.0.subnet_ids.4225826129:                 "subnet-a850bce0"
+      vpc_config.0.subnet_ids.459373779:                  "subnet-c11f05b6"
       vpc_config.0.vpc_id:                                <computed>
 
   + module.eks.aws_iam_instance_profile.workers
@@ -560,7 +562,7 @@ ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\
       instance_type:                                      "${lookup(var.worker_groups[count.index], \"instance_type\", local.workers_group_defaults[\"instance_type\"])}"
       key_name:                                           "${lookup(var.worker_groups[count.index], \"key_name\", local.workers_group_defaults[\"key_name\"])}"
       name:                                               <computed>
-      name_prefix:                                        "poi-eks-cluster-default"
+      name_prefix:                                        "poi-eks-cluster-0"
       placement_tenancy:                                  "${lookup(var.worker_groups[count.index], \"placement_tenancy\", local.workers_group_defaults[\"placement_tenancy\"]
 )}"
       root_block_device.#:                                "1"
@@ -586,7 +588,7 @@ ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\
       tags.%:                                             "2"
       tags.Environment:                                   "poi-eks-env"
       tags.Name:                                          "poi-eks-cluster-eks_cluster_sg"
-      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+      vpc_id:                                             "vpc-3842495d"
 
   + module.eks.aws_security_group.workers
       id:                                                 <computed>
@@ -602,7 +604,7 @@ ct\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\
       tags.Environment:                                   "poi-eks-env"
       tags.Name:                                          "poi-eks-cluster-eks_worker_sg"
       tags.kubernetes.io/cluster/poi-eks-cluster:         "owned"
-      vpc_id:                                             "vpc-0b6e66db6a32a37a8"
+      vpc_id:                                             "vpc-3842495d"
 
   + module.eks.aws_security_group_rule.cluster_egress_internet
       id:                                                 <computed>
@@ -709,7 +711,18 @@ module.eks.null_resource.tags_as_list_of_maps: Creating...
   triggers.key:                 "" => "Environment"
   triggers.propagate_at_launch: "" => "true"
   triggers.value:               "" => "poi-eks-env"
-module.eks.null_resource.tags_as_list_of_maps: Creation complete after 0s (ID: 1001379448879645309)
+module.eks.null_resource.tags_as_list_of_maps: Creation complete after 0s (ID: 9002294971603423036)
+module.eks.aws_iam_role.cluster: Creating...
+  arn:                   "" => "<computed>"
+  assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSClusterAssumeRole\",\n      \"Effect\": \"Allow\",\n      \"
+Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"eks.amazonaws.com\"\n      }\n    }\n  ]\n}"
+  create_date:           "" => "<computed>"
+  force_detach_policies: "" => "false"
+  max_session_duration:  "" => "3600"
+  name:                  "" => "<computed>"
+  name_prefix:           "" => "poi-eks-cluster"
+  path:                  "" => "/"
+  unique_id:             "" => "<computed>"
 module.eks.aws_security_group.cluster: Creating...
   arn:                    "" => "<computed>"
   description:            "" => "EKS cluster security group."
@@ -722,37 +735,27 @@ module.eks.aws_security_group.cluster: Creating...
   tags.%:                 "" => "2"
   tags.Environment:       "" => "poi-eks-env"
   tags.Name:              "" => "poi-eks-cluster-eks_cluster_sg"
-  vpc_id:                 "" => "vpc-0b6e66db6a32a37a8"
-module.eks.aws_iam_role.cluster: Creating...
-  arn:                   "" => "<computed>"
-  assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSClusterAssumeRole\",\n      \"Effect\": \"Allow\",\n      \"
-Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"eks.amazonaws.com\"\n      }\n    }\n  ]\n}"
-  create_date:           "" => "<computed>"
-  force_detach_policies: "" => "false"
-  max_session_duration:  "" => "3600"
-  name:                  "" => "<computed>"
-  name_prefix:           "" => "poi-eks-cluster"
-  path:                  "" => "/"
-  unique_id:             "" => "<computed>"
-module.eks.aws_iam_role.cluster: Creation complete after 4s (ID: poi-eks-cluster20181112121241219800000001)
+  vpc_id:                 "" => "vpc-3842495d"
+module.eks.aws_iam_role.cluster: Creation complete after 4s (ID: poi-eks-cluster20181112145042729000000001)
 module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Creating...
   policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role:       "" => "poi-eks-cluster20181112121241219800000001"
+  role:       "" => "poi-eks-cluster20181112145042729000000001"
 module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Creating...
   policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role:       "" => "poi-eks-cluster20181112121241219800000001"
-module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Creation complete after 4s (ID: poi-eks-cluster20181112121241219800000001-20181112121246254800000003
+  role:       "" => "poi-eks-cluster20181112145042729000000001"
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Creation complete after 5s (ID: poi-eks-cluster20181112145042729000000001-20181112145048761900000003
 )
-module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy: Creation complete after 4s (ID: poi-eks-cluster20181112121241219800000001-20181112121246392300000004
+module.eks.aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy: Creation complete after 5s (ID: poi-eks-cluster20181112145042729000000001-20181112145048774900000004
 )
-module.eks.aws_security_group.cluster: Creation complete after 9s (ID: sg-035d7e4a608a20e6f)
+module.eks.aws_security_group.cluster: Still creating... (10s elapsed)
+module.eks.aws_security_group.cluster: Creation complete after 11s (ID: sg-03e51eeeb304dd9b6)
 module.eks.aws_security_group_rule.cluster_egress_internet: Creating...
   cidr_blocks.#:            "" => "1"
   cidr_blocks.0:            "" => "0.0.0.0/0"
   description:              "" => "Allow cluster egress access to the Internet."
   from_port:                "" => "0"
   protocol:                 "" => "-1"
-  security_group_id:        "" => "sg-035d7e4a608a20e6f"
+  security_group_id:        "" => "sg-03e51eeeb304dd9b6"
   self:                     "" => "false"
   source_security_group_id: "" => "<computed>"
   to_port:                  "" => "0"
@@ -764,17 +767,18 @@ module.eks.aws_eks_cluster.this: Creating...
   endpoint:                                   "" => "<computed>"
   name:                                       "" => "poi-eks-cluster"
   platform_version:                           "" => "<computed>"
-  role_arn:                                   "" => "arn:aws:iam::077978206904:role/poi-eks-cluster20181112121241219800000001"
+  role_arn:                                   "" => "arn:aws:iam::077978206904:role/poi-eks-cluster20181112145042729000000001"
   version:                                    "" => "1.10"
   vpc_config.#:                               "" => "1"
   vpc_config.0.security_group_ids.#:          "" => "1"
-  vpc_config.0.security_group_ids.3121642222: "" => "sg-035d7e4a608a20e6f"
-  vpc_config.0.subnet_ids.#:                  "" => "3"
-  vpc_config.0.subnet_ids.1737027237:         "" => "subnet-0f90d4b2597e54dc9"
-  vpc_config.0.subnet_ids.2424429063:         "" => "subnet-037ac1c0e6a3ba2fb"
-  vpc_config.0.subnet_ids.3914643950:         "" => "subnet-093f483dc98504530"
+  vpc_config.0.security_group_ids.3322252694: "" => "sg-03e51eeeb304dd9b6"
+  vpc_config.0.subnet_ids.#:                  "" => "4"
+  vpc_config.0.subnet_ids.360204655:          "" => "subnet-8813e1ec"
+  vpc_config.0.subnet_ids.4209864939:         "" => "subnet-a3685afa"
+  vpc_config.0.subnet_ids.4225826129:         "" => "subnet-a850bce0"
+  vpc_config.0.subnet_ids.459373779:          "" => "subnet-c11f05b6"
   vpc_config.0.vpc_id:                        "" => "<computed>"
-module.eks.aws_security_group_rule.cluster_egress_internet: Creation complete after 4s (ID: sgrule-1918748854)
+module.eks.aws_security_group_rule.cluster_egress_internet: Creation complete after 5s (ID: sgrule-3008376012)
 module.eks.aws_eks_cluster.this: Still creating... (10s elapsed)
 module.eks.aws_eks_cluster.this: Still creating... (20s elapsed)
 module.eks.aws_eks_cluster.this: Still creating... (30s elapsed)
@@ -834,12 +838,7 @@ module.eks.aws_eks_cluster.this: Still creating... (9m20s elapsed)
 module.eks.aws_eks_cluster.this: Still creating... (9m30s elapsed)
 module.eks.aws_eks_cluster.this: Still creating... (9m40s elapsed)
 module.eks.aws_eks_cluster.this: Still creating... (9m50s elapsed)
-module.eks.aws_eks_cluster.this: Still creating... (10m0s elapsed)
-module.eks.aws_eks_cluster.this: Still creating... (10m10s elapsed)
-module.eks.aws_eks_cluster.this: Still creating... (10m20s elapsed)
-module.eks.aws_eks_cluster.this: Still creating... (10m30s elapsed)
-module.eks.aws_eks_cluster.this: Still creating... (10m40s elapsed)
-module.eks.aws_eks_cluster.this: Creation complete after 10m44s (ID: poi-eks-cluster)
+module.eks.aws_eks_cluster.this: Creation complete after 9m53s (ID: poi-eks-cluster)
 module.eks.aws_iam_role.workers: Creating...
   arn:                   "" => "<computed>"
   assume_role_policy:    "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"EKSWorkerAssumeRole\",\n      \"Effect\": \"Allow\",\n      \"A
@@ -864,9 +863,9 @@ module.eks.aws_security_group.workers: Creating...
   tags.Environment:                           "" => "poi-eks-env"
   tags.Name:                                  "" => "poi-eks-cluster-eks_worker_sg"
   tags.kubernetes.io/cluster/poi-eks-cluster: "" => "owned"
-  vpc_id:                                     "" => "vpc-0b6e66db6a32a37a8"
-module.eks.data.template_file.kubeconfig: Refreshing state...
+  vpc_id:                                     "" => "vpc-3842495d"
 module.eks.data.aws_iam_policy_document.worker_autoscaling: Refreshing state...
+module.eks.data.template_file.kubeconfig: Refreshing state...
 module.eks.aws_iam_policy.worker_autoscaling: Creating...
   arn:         "" => "<computed>"
   description: "" => "EKS worker node autoscaling policy for cluster poi-eks-cluster"
@@ -880,84 +879,61 @@ AutoScalingInstances\",\n        \"autoscaling:DescribeAutoScalingGroups\"\n    
 oscaling:SetDesiredCapacity\"\n      ],\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"autoscaling:ResourceTag/k8s.io/cluster-a
 utoscaler/enabled\": \"true\",\n          \"autoscaling:ResourceTag/kubernetes.io/cluster/poi-eks-cluster\": \"owned\"\n        }\n      }\n    }\n  ]\n}"
 module.eks.local_file.kubeconfig: Creating...
-  content:  "" => "apiVersion: v1\npreferences: {}\nkind: Config\n\nclusters:\n- cluster:\n    server: https://095CB970CDEEB69F96F7E97ED12FEB9E.sk1.eu-west-1.eks.amazonaws.co
+  content:  "" => "apiVersion: v1\npreferences: {}\nkind: Config\n\nclusters:\n- cluster:\n    server: https://D4DF4DD16049F9E5C09A25BBB6AC88E4.yl4.eu-west-1.eks.amazonaws.co
 m\n    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjR
-YRFRFNE1URXhNakV5TWpBeU9Wb1hEVEk0TVRFd09URXlNakF5T1Zvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBT0NiCjFjeTFabUdkMVpJQ
-3ZxRXNoVFkrTkJKWjd2RWkvWWtCcUZHVzlqN21NT1VFS2VsWFQ3Wng5SDJIL1ZLOFFaTGQKa2d5TVV3d0hTaE9GTU5yWlJSTnZuNi83U3dCK2ErNXR1b3dOWCsyd2kxODE3V1lLZEN6bTYwalpJT0l2NHBXYQpBRlljKzdiQUJpenI
-1OUJFMUdtSmwzQTlsc21oc1AvZmU4Zk5QY0VmYTdCMTJHcmljZDM1OEl6MHVwd0xDSDloCmIzVTE2UER1NzhWTWhFNlVDWm1iZ2xPeG94dDBkZTExdVo0STBacU94RmhycEdZT0VoV21FT3BDYVBHZlB4c0UKMWhZRTBRcFVtSjZTN
-09RTVlDU3dsekdyRjRFblpNZ0pCbFdaL2JhTjdmYkhTaFNwbnVqRGxIekRWb0JkTWN4WgpZUCtvRk5xV2Q4YzQwTW1vOWlVQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0R
-RWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFNZzdXS0Q2ZXdiSUFqMEVGYkJmSDV6UUtabG4KZGxzZTd3ZFlRemIrSHZla05yUnE3eDgwNzB3ZndtenZyZDdUNm5rTkpwbG5xOVRlWjV6Y3o5RXQ4SGlMRGp0cgpaenhwTGlJRndjK0NGU
-3BGWmNVSUJ4ZUFsRVlPRmVoRjFTSXNJcjRobHRib05MbmJiWEhEVU90OTRzVGwrREJ6CitpdWthSjBJV3RkR1VvOFVmcXJTNG14YS8yL1hCMzBzeFJiOGNLWWlMdU5yZDBtUTFrV0g5alc5T1NjVDVRNFQKMUw3VmxzS3BCZTRhWFd
-CZzFUZld4M2o2STdVZlQwS3lENnQ2NmsvNHlKZzdqSUhVc2VFa0JSbWsvWllmMjd2egp2QktsanJWaHNWNjBSanhqSXlaM251YXdOdVNzWXZMdzFkaHMyb3V0RGw2RytHODdEOUwwbGw3cTdOWT0KLS0tLS1FTkQgQ0VSVElGSUNBV
+YRFRFNE1URXhNakUwTlRjMU5Gb1hEVEk0TVRFd09URTBOVGMxTkZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTmtICkpHUVB4ZzR1dDNKM
+3ZuWkZvV3RlUnBSaThWVFc2aU9zN0hrYmZ0NktFREY4WUMrQXBnMzd6QWwweGtGTnR0UVQKSzg2M3QrbjhCcVFBVHZucEdpRWhBVWVwZjRScUtPL0dnQldqZjhQYytIUXF6d1NDMjFOY291WlRBaW9IK0VKcwo5ZTU3QVFWdW1Jakt
+iSzB6NG9OYlJZSXJxazd6Rjl4UGFBeTNYSzZZOUgvY0FsYlhSbUVCVVp2TnVuaExEMUprCldsK0pQNFc2aXRzMS9OWEUzUU9YYVdEcVNyaTNBV2s0Y3hvdTJENHdzMmVJLzNmRktYTEFNcDIvZkVPOCs3eFIKMm1jWTJXelhNQnd1a
+mVNZHBIRk0xZHRrbTBGdk9zZSsvQ2tOb1hpZnF5TTlvdytxSnFwLzU1VkF4V2hBbTBWeQp4bEwvdVBZUU9WSWFpZlFpaWJFQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0R
+RWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFIc01tNmFLKzA1MDNEWEtwZ1hmbWpNRVRtdFgKNlN6bk1aZUZvYkZDS0FRSml1bWJES25rUnZOczR2YURSZWE0eGROZ2J1SkxHUzR4MllwWFdXcEh6bmVMRWZTcgpVY2M3ZVFCNVpLcGZ3a
+GJGLy9jd3RwRVhaNm9waWRqWGU0RnBZd1FEV0k3aGc5OFY5VXpMeFpYWGQvbE9YRUpZCmxvYVJNSjc0TVZ3Tnd4cmtrMjg3M0N5UHVCTk5MNG80enlna1lHQVNETmxxWlVwc1FnbFZVUjRxMU9UMjd4bXcKVDlROEtjV3JPK2ZjcTV
+HMzFpcHNBb2drUi9QSjFJby9XZkxSdXFnL2JYcmhWM255ZHZzNk03MW5MMTM4MHJSKwpOR0NUMW8wMXNJT3BHdmpXWlhjMVJMTi83aDkydmcvUW5DZlJBeWtZekpUQm9JcndhazI5R1pQK2kxZz0KLS0tLS1FTkQgQ0VSVElGSUNBV
 EUtLS0tLQo=\n  name: eks_poi-eks-cluster\n\ncontexts:\n- context:\n    cluster: eks_poi-eks-cluster\n    user: eks_poi-eks-cluster\n  name: eks_poi-eks-cluster\n\ncurrent-con
 text: eks_poi-eks-cluster\n\nusers:\n- name: eks_poi-eks-cluster\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1alpha1\n      command: aws-iam-authenti
 cator\n      args:\n        - \"token\"\n        - \"-i\"\n        - \"poi-eks-cluster\"\n\n\n"
   filename: "" => "./kubeconfig_poi-eks-cluster"
-module.eks.local_file.kubeconfig: Creation complete after 0s (ID: ba2746ccf23e7d7a8982bbcb0affc0ad8fb5b1b0)
-module.eks.aws_iam_role.workers: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005)
+module.eks.local_file.kubeconfig: Creation complete after 0s (ID: d3b3f7595139dfd6234409cd78a396069f9e0de4)
+module.eks.aws_iam_policy.worker_autoscaling: Creation complete after 5s (ID: arn:aws:iam::077978206904:policy/eks-wo...-eks-cluster20181112150046927400000007)
+module.eks.aws_iam_role.workers: Creation complete after 6s (ID: poi-eks-cluster20181112150046903400000005)
 module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Creating...
   policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role:       "" => "poi-eks-cluster20181112122333980500000005"
-module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Creating...
-  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role:       "" => "poi-eks-cluster20181112122333980500000005"
+  role:       "" => "poi-eks-cluster20181112150046903400000005"
+module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Creating...
+  policy_arn: "" => "arn:aws:iam::077978206904:policy/eks-worker-autoscaling-poi-eks-cluster20181112150046927400000007"
+  role:       "" => "poi-eks-cluster20181112150046903400000005"
 module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Creating...
   policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role:       "" => "poi-eks-cluster20181112122333980500000005"
+  role:       "" => "poi-eks-cluster20181112150046903400000005"
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Creating...
+  policy_arn: "" => "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role:       "" => "poi-eks-cluster20181112150046903400000005"
 module.eks.aws_iam_instance_profile.workers: Creating...
   arn:         "" => "<computed>"
   create_date: "" => "<computed>"
   name:        "" => "<computed>"
   name_prefix: "" => "poi-eks-cluster"
   path:        "" => "/"
-  role:        "" => "poi-eks-cluster20181112122333980500000005"
+  role:        "" => "poi-eks-cluster20181112150046903400000005"
   roles.#:     "" => "<computed>"
   unique_id:   "" => "<computed>"
 module.eks.data.template_file.userdata: Refreshing state...
-module.eks.aws_iam_policy.worker_autoscaling: Creation complete after 5s (ID: arn:aws:iam::077978206904:policy/eks-wo...-eks-cluster20181112122333998500000007)
-module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Creating...
-  policy_arn: "" => "arn:aws:iam::077978206904:policy/eks-worker-autoscaling-poi-eks-cluster20181112122333998500000007"
-  role:       "" => "poi-eks-cluster20181112122333980500000005"
-module.eks.aws_iam_instance_profile.workers: Creation complete after 4s (ID: poi-eks-cluster20181112122337680100000008)
-module.eks.data.template_file.worker_role_arns: Refreshing state...
-module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005-20181112122339204700000
-009)
-module.eks.data.template_file.config_map_aws_auth: Refreshing state...
-module.eks.local_file.config_map_aws_auth: Creating...
-  content:  "" => "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:iam::077978206904:role
-/poi-eks-cluster20181112122333980500000005\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - system:nodes\n\n\n  ma
-pUsers: |\n\n  mapAccounts: |\n\n"
-  filename: "" => "./config-map-aws-auth_poi-eks-cluster.yaml"
-module.eks.null_resource.update_config_map_aws_auth: Creating...
-  triggers.%:                   "" => "1"
-  triggers.config_map_rendered: "" => "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:ia
-m::077978206904:role/poi-eks-cluster20181112122333980500000005\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - sy
-stem:nodes\n\n\n  mapUsers: |\n\n  mapAccounts: |\n\n"
-module.eks.null_resource.update_config_map_aws_auth: Provisioning with 'local-exec'...
-module.eks.local_file.config_map_aws_auth: Creation complete after 0s (ID: 9f829ffbc7c8108fcf039c5b626166d63c25bc29)
-module.eks.null_resource.update_config_map_aws_auth (local-exec): Executing: ["cmd" "/C" "kubectl apply -f ./config-map-aws-auth_poi-eks-cluster.yaml --kubeconfig ./kubeconfi
-g_poi-eks-cluster"]
-module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005-20181112122339
-32800000000b)
-module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Creation complete after 5s (ID: poi-eks-cluster20181112122333980500000005-2018111212233922970000000a)
-module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Creation complete after 4s (ID: poi-eks-cluster20181112122333980500000005-2018111212234030440000000c)
-module.eks.aws_security_group.workers: Creation complete after 10s (ID: sg-0e4fdf39129a50902)
-module.eks.aws_security_group_rule.cluster_https_worker_ingress: Creating...
-  description:              "" => "Allow pods to communicate with the EKS cluster API."
-  from_port:                "" => "443"
+module.eks.aws_security_group.workers: Creation complete after 10s (ID: sg-0c1068c7530d6a697)
+module.eks.aws_security_group_rule.workers_ingress_cluster: Creating...
+  description:              "" => "Allow workers Kubelets and pods to receive communication from the cluster control plane."
+  from_port:                "" => "1025"
   protocol:                 "" => "tcp"
-  security_group_id:        "" => "sg-035d7e4a608a20e6f"
+  security_group_id:        "" => "sg-0c1068c7530d6a697"
   self:                     "" => "false"
-  source_security_group_id: "" => "sg-0e4fdf39129a50902"
-  to_port:                  "" => "443"
+  source_security_group_id: "" => "sg-03e51eeeb304dd9b6"
+  to_port:                  "" => "65535"
   type:                     "" => "ingress"
 module.eks.aws_security_group_rule.workers_ingress_cluster_https: Creating...
   description:              "" => "Allow pods running extension API servers on port 443 to receive communication from cluster control plane."
   from_port:                "" => "443"
   protocol:                 "" => "tcp"
-  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  security_group_id:        "" => "sg-0c1068c7530d6a697"
   self:                     "" => "false"
-  source_security_group_id: "" => "sg-035d7e4a608a20e6f"
+  source_security_group_id: "" => "sg-03e51eeeb304dd9b6"
   to_port:                  "" => "443"
   type:                     "" => "ingress"
 module.eks.aws_security_group_rule.workers_egress_internet: Creating...
@@ -966,7 +942,7 @@ module.eks.aws_security_group_rule.workers_egress_internet: Creating...
   description:              "" => "Allow nodes all egress to the Internet."
   from_port:                "" => "0"
   protocol:                 "" => "-1"
-  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  security_group_id:        "" => "sg-0c1068c7530d6a697"
   self:                     "" => "false"
   source_security_group_id: "" => "<computed>"
   to_port:                  "" => "0"
@@ -975,81 +951,105 @@ module.eks.aws_security_group_rule.workers_ingress_self: Creating...
   description:              "" => "Allow node to communicate with each other."
   from_port:                "" => "0"
   protocol:                 "" => "-1"
-  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  security_group_id:        "" => "sg-0c1068c7530d6a697"
   self:                     "" => "false"
-  source_security_group_id: "" => "sg-0e4fdf39129a50902"
+  source_security_group_id: "" => "sg-0c1068c7530d6a697"
   to_port:                  "" => "65535"
   type:                     "" => "ingress"
-module.eks.aws_security_group_rule.workers_ingress_cluster: Creating...
-  description:              "" => "Allow workers Kubelets and pods to receive communication from the cluster control plane."
-  from_port:                "" => "1025"
+module.eks.aws_security_group_rule.cluster_https_worker_ingress: Creating...
+  description:              "" => "Allow pods to communicate with the EKS cluster API."
+  from_port:                "" => "443"
   protocol:                 "" => "tcp"
-  security_group_id:        "" => "sg-0e4fdf39129a50902"
+  security_group_id:        "" => "sg-03e51eeeb304dd9b6"
   self:                     "" => "false"
-  source_security_group_id: "" => "sg-035d7e4a608a20e6f"
-  to_port:                  "" => "65535"
+  source_security_group_id: "" => "sg-0c1068c7530d6a697"
+  to_port:                  "" => "443"
   type:                     "" => "ingress"
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEC2ContainerRegistryReadOnly: Creation complete after 5s (ID: poi-eks-cluster20181112150046903400000005-20181112150054
+744700000009)
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKSWorkerNodePolicy: Creation complete after 5s (ID: poi-eks-cluster20181112150046903400000005-20181112150054757700000
+00a)
+module.eks.aws_iam_instance_profile.workers: Creation complete after 5s (ID: poi-eks-cluster20181112150053227000000008)
+module.eks.data.template_file.worker_role_arns: Refreshing state...
 module.eks.aws_launch_configuration.workers: Creating...
   associate_public_ip_address:               "" => "false"
   ebs_block_device.#:                        "" => "<computed>"
-  ebs_optimized:                             "" => "true"
+  ebs_optimized:                             "" => "false"
   enable_monitoring:                         "" => "true"
-  iam_instance_profile:                      "" => "poi-eks-cluster20181112122337680100000008"
+  iam_instance_profile:                      "" => "poi-eks-cluster20181112150053227000000008"
   image_id:                                  "" => "ami-00c3b2d35bddd4f5c"
-  instance_type:                             "" => "m4.large"
+  instance_type:                             "" => "t2.medium"
   key_name:                                  "" => "<computed>"
   name:                                      "" => "<computed>"
-  name_prefix:                               "" => "poi-eks-cluster-default"
+  name_prefix:                               "" => "poi-eks-cluster-0"
   root_block_device.#:                       "" => "1"
   root_block_device.0.delete_on_termination: "" => "true"
   root_block_device.0.iops:                  "" => "0"
   root_block_device.0.volume_size:           "" => "100"
   root_block_device.0.volume_type:           "" => "gp2"
   security_groups.#:                         "" => "1"
-  security_groups.565454835:                 "" => "sg-0e4fdf39129a50902"
+  security_groups.2390100246:                "" => "sg-0c1068c7530d6a697"
   user_data_base64:                          "" => "IyEvYmluL2Jhc2ggLXhlCgojIEFsbG93IHVzZXIgc3VwcGxpZWQgcHJlIHVzZXJkYXRhIGNvZGUKCgojIEJvb3RzdHJhcCBhbmQgam9pbiB0aGUgY2x1c3Rlcg
 ovZXRjL2Vrcy9ib290c3RyYXAuc2ggLS1iNjQtY2x1c3Rlci1jYSAnTFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVTjVSRU5EUVdKRFowRjNTVUpCWjBsQ1FVUkJUa0puYTNGb2EybEhPWGN3UWtGUmMw
-WkJSRUZXVFZKTmQwVlJXVVJXVVZGRVJYZHdjbVJYU213S1kyMDFiR1JIVm5wTlFqUllSRlJGTkUxVVJYaE5ha1Y1VFdwQmVVOVdiMWhFVkVrMFRWUkZkMDlVUlhsTmFrRjVUMVp2ZDBaVVJWUk5Ra1ZIUVRGVlJRcEJlRTFMWVROV2
-FWcFlTblZhV0ZKc1kzcERRMEZUU1hkRVVWbEtTMjlhU1doMlkwNUJVVVZDUWxGQlJHZG5SVkJCUkVORFFWRnZRMmRuUlVKQlQwTmlDakZqZVRGYWJVZGtNVnBKUTNaeFJYTm9WRmtyVGtKS1dqZDJSV2t2V1d0Q2NVWkhWemxxTjIx
-TlQxVkZTMlZzV0ZRM1duZzVTREpJTDFaTE9GRmFUR1FLYTJkNVRWVjNkMGhUYUU5R1RVNXlXbEpTVG5adU5pODNVM2RDSzJFck5YUjFiM2RPV0NzeWQya3hPREUzVjFsTFpFTjZiVFl3YWxwSlQwbDJOSEJYWVFwQlJsbGpLemRpUV
-VKcGVuSTFPVUpGTVVkdFNtd3pRVGxzYzIxb2MxQXZabVU0Wms1UVkwVm1ZVGRDTVRKSGNtbGpaRE0xT0VsNk1IVndkMHhEU0Rsb0NtSXpWVEUyVUVSMU56aFdUV2hGTmxWRFdtMWlaMnhQZUc5NGREQmtaVEV4ZFZvMFNUQmFjVTk0
-Um1oeWNFZFpUMFZvVjIxRlQzQkRZVkJIWmxCNGMwVUtNV2haUlRCUmNGVnRTalpUTjA5UlRWbERVM2RzZWtkeVJqUkZibHBOWjBwQ2JGZGFMMkpoVGpkbVlraFRhRk53Ym5WcVJHeElla1JXYjBKa1RXTjRXZ3BaVUN0dlJrNXhWMl
-E0WXpRd1RXMXZPV2xWUTBGM1JVRkJZVTFxVFVORmQwUm5XVVJXVWpCUVFWRklMMEpCVVVSQlowdHJUVUU0UjBFeFZXUkZkMFZDQ2k5M1VVWk5RVTFDUVdZNGQwUlJXVXBMYjFwSmFIWmpUa0ZSUlV4Q1VVRkVaMmRGUWtGTlp6ZFhT
-MFEyWlhkaVNVRnFNRVZHWWtKbVNEVjZVVXRhYkc0S1pHeHpaVGQzWkZsUmVtSXJTSFpsYTA1eVVuRTNlRGd3TnpCM1puZHRlblp5WkRkVU5tNXJUa3B3Ykc1eE9WUmxXalY2WTNvNVJYUTRTR2xNUkdwMGNncGFlbmh3VEdsSlJuZG
-pLME5HVTNCR1dtTlZTVUo0WlVGc1JWbFBSbVZvUmpGVFNYTkpjalJvYkhSaWIwNU1ibUppV0VoRVZVOTBPVFJ6Vkd3clJFSjZDaXRwZFd0aFNqQkpWM1JrUjFWdk9GVm1jWEpUTkcxNFlTOHlMMWhDTXpCemVGSmlPR05MV1dsTWRV
-NXlaREJ0VVRGclYwZzVhbGM1VDFOalZEVlJORlFLTVV3M1ZteHpTM0JDWlRSaFdGZENaekZVWmxkNE0ybzJTVGRWWmxRd1MzbEVOblEyTm1zdk5IbEtaemRxU1VoVmMyVkZhMEpTYldzdldsbG1NamQyZWdwMlFrdHNhbkpXYUhOV0
-5qQlNhbmhxU1hsYU0yNTFZWGRPZFZOeldYWk1kekZrYUhNeWIzVjBSR3cyUnl0SE9EZEVPVXd3Ykd3M2NUZE9XVDBLTFMwdExTMUZUa1FnUTBWU1ZFbEdTVU5CVkVVdExTMHRMUW89JyAtLWFwaXNlcnZlci1lbmRwb2ludCAnaHR0
-cHM6Ly8wOTVDQjk3MENERUVCNjlGOTZGN0U5N0VEMTJGRUI5RS5zazEuZXUtd2VzdC0xLmVrcy5hbWF6b25hd3MuY29tJyAtLWt1YmVsZXQtZXh0cmEtYXJncyAnJyAncG9pLWVrcy1jbHVzdGVyJwoKIyBBbGxvdyB1c2VyIHN1cH
+WkJSRUZXVFZKTmQwVlJXVVJXVVZGRVJYZHdjbVJYU213S1kyMDFiR1JIVm5wTlFqUllSRlJGTkUxVVJYaE5ha1V3VGxSak1VNUdiMWhFVkVrMFRWUkZkMDlVUlRCT1ZHTXhUa1p2ZDBaVVJWUk5Ra1ZIUVRGVlJRcEJlRTFMWVROV2
+FWcFlTblZhV0ZKc1kzcERRMEZUU1hkRVVWbEtTMjlhU1doMlkwNUJVVVZDUWxGQlJHZG5SVkJCUkVORFFWRnZRMmRuUlVKQlRtdElDa3BIVVZCNFp6UjFkRE5LTTNadVdrWnZWM1JsVW5CU2FUaFdWRmMyYVU5ek4waHJZbVowTmt0
+RlJFWTRXVU1yUVhCbk16ZDZRV3d3ZUd0R1RuUjBVVlFLU3pnMk0zUXJiamhDY1ZGQlZIWnVjRWRwUldoQlZXVndaalJTY1V0UEwwZG5RbGRxWmpoUVl5dElVWEY2ZDFORE1qRk9ZMjkxV2xSQmFXOUlLMFZLY3dvNVpUVTNRVkZXZF
+cxSmFrdGlTekI2Tkc5T1lsSlpTWEp4YXpkNlJqbDRVR0ZCZVROWVN6WlpPVWd2WTBGc1lsaFNiVVZDVlZwMlRuVnVhRXhFTVVwckNsZHNLMHBRTkZjMmFYUnpNUzlPV0VVelVVOVlZVmRFY1ZOeWFUTkJWMnMwWTNodmRUSkVOSGR6
+TW1WSkx6Tm1Sa3RZVEVGTmNESXZaa1ZQT0NzM2VGSUtNbTFqV1RKWGVsaE5RbmQxYW1WTlpIQklSazB4WkhScmJUQkdkazl6WlNzdlEydE9iMWhwWm5GNVRUbHZkeXR4U25Gd0x6VTFWa0Y0VjJoQmJUQldlUXA0YkV3dmRWQlpVVT
+lXU1dGcFpsRnBhV0pGUTBGM1JVRkJZVTFxVFVORmQwUm5XVVJXVWpCUVFWRklMMEpCVVVSQlowdHJUVUU0UjBFeFZXUkZkMFZDQ2k5M1VVWk5RVTFDUVdZNGQwUlJXVXBMYjFwSmFIWmpUa0ZSUlV4Q1VVRkVaMmRGUWtGSWMwMXRO
+bUZMS3pBMU1ETkVXRXR3WjFobWJXcE5SVlJ0ZEZnS05sTjZiazFhWlVadllrWkRTMEZSU21sMWJXSkVTMjVyVW5aT2N6UjJZVVJTWldFMGVHUk9aMkoxU2t4SFV6UjRNbGx3V0ZkWGNFaDZibVZNUldaVGNncFZZMk0zWlZGQ05WcE
+xjR1ozYUdKR0x5OWpkM1J3UlZoYU5tOXdhV1JxV0dVMFJuQlpkMUZFVjBrM2FHYzVPRlk1VlhwTWVGcFlXR1F2YkU5WVJVcFpDbXh2WVZKTlNqYzBUVlozVG5kNGNtdHJNamczTTBONVVIVkNUazVNTkc4MGVubG5hMWxIUVZORVRt
+eHhXbFZ3YzFGbmJGWlZValJ4TVU5VU1qZDRiWGNLVkRsUk9FdGpWM0pQSzJaamNUVkhNekZwY0hOQmIyZHJVaTlRU2pGSmJ5OVhaa3hTZFhGbkwySlljbWhXTTI1NVpIWnpOazAzTVc1TU1UTTRNSEpTS3dwT1IwTlVNVzh3TVhOSl
+QzQkhkbXBYV2xoak1WSk1UaTgzYURreWRtY3ZVVzVEWmxKQmVXdFpla3BVUW05SmNuZGhhekk1UjFwUUsya3haejBLTFMwdExTMUZUa1FnUTBWU1ZFbEdTVU5CVkVVdExTMHRMUW89JyAtLWFwaXNlcnZlci1lbmRwb2ludCAnaHR0
+cHM6Ly9ENERGNEREMTYwNDlGOUU1QzA5QTI1QkJCNkFDODhFNC55bDQuZXUtd2VzdC0xLmVrcy5hbWF6b25hd3MuY29tJyAtLWt1YmVsZXQtZXh0cmEtYXJncyAnJyAncG9pLWVrcy1jbHVzdGVyJwoKIyBBbGxvdyB1c2VyIHN1cH
 BsaWVkIHVzZXJkYXRhIGNvZGUKCg=="
-module.eks.aws_security_group_rule.workers_egress_internet: Creation complete after 3s (ID: sgrule-387485003)
-module.eks.aws_security_group_rule.cluster_https_worker_ingress: Creation complete after 3s (ID: sgrule-961352781)
-module.eks.aws_security_group_rule.workers_ingress_self: Creation complete after 7s (ID: sgrule-929716702)
-module.eks.null_resource.update_config_map_aws_auth: Still creating... (10s elapsed)
-module.eks.aws_security_group_rule.workers_ingress_cluster_https: Still creating... (10s elapsed)
-module.eks.aws_security_group_rule.workers_ingress_cluster: Still creating... (10s elapsed)
+module.eks.data.template_file.config_map_aws_auth: Refreshing state...
+module.eks.aws_iam_role_policy_attachment.workers_autoscaling: Creation complete after 5s (ID: poi-eks-cluster20181112150046903400000005-2018111215005480270000000c)
+module.eks.local_file.config_map_aws_auth: Creating...
+  content:  "" => "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:iam::077978206904:role
+/poi-eks-cluster20181112150046903400000005\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - system:nodes\n\n\n  ma
+pUsers: |\n\n  mapAccounts: |\n\n"
+  filename: "" => "./config-map-aws-auth_poi-eks-cluster.yaml"
+module.eks.local_file.config_map_aws_auth: Creation complete after 0s (ID: 61740f7da860da5e9336e29f337b9f7cb4f45cee)
+module.eks.null_resource.update_config_map_aws_auth: Creating...
+  triggers.%:                   "" => "1"
+  triggers.config_map_rendered: "" => "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: aws-auth\n  namespace: kube-system\ndata:\n  mapRoles: |\n    - rolearn: arn:aws:ia
+m::077978206904:role/poi-eks-cluster20181112150046903400000005\n      username: system:node:{{EC2PrivateDNSName}}\n      groups:\n        - system:bootstrappers\n        - sy
+stem:nodes\n\n\n  mapUsers: |\n\n  mapAccounts: |\n\n"
+module.eks.aws_iam_role_policy_attachment.workers_AmazonEKS_CNI_Policy: Creation complete after 5s (ID: poi-eks-cluster20181112150046903400000005-2018111215005478460000000b)
+module.eks.null_resource.update_config_map_aws_auth: Provisioning with 'local-exec'...
+module.eks.null_resource.update_config_map_aws_auth (local-exec): Executing: ["cmd" "/C" "kubectl apply -f ./config-map-aws-auth_poi-eks-cluster.yaml --kubeconfig ./kubeconfi
+g_poi-eks-cluster"]
+module.eks.aws_security_group_rule.workers_ingress_cluster: Creation complete after 4s (ID: sgrule-4234145352)
+module.eks.aws_security_group_rule.cluster_https_worker_ingress: Creation complete after 4s (ID: sgrule-1332668048)
+module.eks.aws_security_group_rule.workers_ingress_cluster_https: Creation complete after 8s (ID: sgrule-3453657617)
+module.eks.aws_security_group_rule.workers_egress_internet: Still creating... (10s elapsed)
+module.eks.aws_security_group_rule.workers_ingress_self: Still creating... (10s elapsed)
 module.eks.aws_launch_configuration.workers: Still creating... (10s elapsed)
-module.eks.aws_launch_configuration.workers: Creation complete after 10s (ID: poi-eks-cluster-default2018111212234615850000000d)
+module.eks.null_resource.update_config_map_aws_auth: Still creating... (10s elapsed)
+module.eks.aws_security_group_rule.workers_egress_internet: Creation complete after 12s (ID: sgrule-1851403480)
+module.eks.aws_launch_configuration.workers: Creation complete after 11s (ID: poi-eks-cluster-02018111215010039420000000d)
 module.eks.aws_autoscaling_group.workers: Creating...
   arn:                            "" => "<computed>"
   default_cooldown:               "" => "<computed>"
-  desired_capacity:               "" => "1"
+  desired_capacity:               "" => "3"
   force_delete:                   "" => "false"
   health_check_grace_period:      "" => "300"
   health_check_type:              "" => "<computed>"
-  launch_configuration:           "" => "poi-eks-cluster-default2018111212234615850000000d"
+  launch_configuration:           "" => "poi-eks-cluster-02018111215010039420000000d"
   load_balancers.#:               "" => "<computed>"
-  max_size:                       "" => "3"
+  max_size:                       "" => "4"
   metrics_granularity:            "" => "1Minute"
   min_size:                       "" => "1"
   name:                           "" => "<computed>"
-  name_prefix:                    "" => "poi-eks-cluster-default"
+  name_prefix:                    "" => "poi-eks-cluster-0"
   protect_from_scale_in:          "" => "false"
   service_linked_role_arn:        "" => "<computed>"
   tags.#:                         "" => "4"
   tags.0.%:                       "" => "3"
   tags.0.key:                     "" => "Name"
   tags.0.propagate_at_launch:     "" => "1"
-  tags.0.value:                   "" => "poi-eks-cluster-default-eks_asg"
+  tags.0.value:                   "" => "poi-eks-cluster-0-eks_asg"
   tags.1.%:                       "" => "3"
   tags.1.key:                     "" => "kubernetes.io/cluster/poi-eks-cluster"
   tags.1.propagate_at_launch:     "" => "1"
@@ -1063,24 +1063,28 @@ module.eks.aws_autoscaling_group.workers: Creating...
   tags.3.propagate_at_launch:     "" => "1"
   tags.3.value:                   "" => "poi-eks-env"
   target_group_arns.#:            "" => "<computed>"
-  vpc_zone_identifier.#:          "" => "3"
-  vpc_zone_identifier.1523456390: "" => "subnet-0f90d4b2597e54dc9"
-  vpc_zone_identifier.833480210:  "" => "subnet-037ac1c0e6a3ba2fb"
-  vpc_zone_identifier.947301147:  "" => "subnet-093f483dc98504530"
+  vpc_zone_identifier.#:          "" => "4"
+  vpc_zone_identifier.1004225602: "" => "subnet-a850bce0"
+  vpc_zone_identifier.1874057288: "" => "subnet-c11f05b6"
+  vpc_zone_identifier.2903397952: "" => "subnet-8813e1ec"
+  vpc_zone_identifier.3978819587: "" => "subnet-a3685afa"
   wait_for_capacity_timeout:      "" => "10m"
-module.eks.aws_security_group_rule.workers_ingress_cluster_https: Creation complete after 11s (ID: sgrule-788543922)
-module.eks.aws_security_group_rule.workers_ingress_cluster: Creation complete after 15s (ID: sgrule-4252417876)
+module.eks.aws_security_group_rule.workers_ingress_self: Creation complete after 16s (ID: sgrule-104457586)
 module.eks.null_resource.update_config_map_aws_auth (local-exec): configmap "aws-auth" created
-module.eks.null_resource.update_config_map_aws_auth: Creation complete after 19s (ID: 2555271777902754812)
+module.eks.null_resource.update_config_map_aws_auth: Creation complete after 19s (ID: 6723567334385867812)
 module.eks.aws_autoscaling_group.workers: Still creating... (10s elapsed)
 module.eks.aws_autoscaling_group.workers: Still creating... (20s elapsed)
 module.eks.aws_autoscaling_group.workers: Still creating... (30s elapsed)
 module.eks.aws_autoscaling_group.workers: Still creating... (40s elapsed)
-module.eks.aws_autoscaling_group.workers: Still creating... (50s elapsed)
-module.eks.aws_autoscaling_group.workers: Creation complete after 52s (ID: poi-eks-cluster-default2018111212235445370000000e)
+module.eks.aws_autoscaling_group.workers: Creation complete after 49s (ID: poi-eks-cluster-02018111215010884090000000e)
 
 Apply complete! Resources: 25 added, 0 changed, 0 destroyed.
-PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl get nodes
-NAME                 STATUS    ROLES     AGE       VERSION
-docker-for-desktop   Ready     master    64d       v1.10.3
-PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks>
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get nodes
+NAME                                           STATUS    ROLES     AGE       VERSION
+ip-172-29-118-146.eu-west-1.compute.internal   Ready     <none>    2m        v1.10.3
+ip-172-29-119-45.eu-west-1.compute.internal    Ready     <none>    2m        v1.10.3
+ip-172-29-226-220.eu-west-1.compute.internal   Ready     <none>    2m        v1.10.3
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get services
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   5m
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> terraform destroy

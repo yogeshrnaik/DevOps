@@ -1,0 +1,20 @@
+
+Apply complete! Resources: 25 added, 0 changed, 0 destroyed.
+
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get nodes
+No resources found.
+
+
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl  --kubeconfig .\kubeconfig_poi-eks-cluster  apply -f  .\config-map-aws-auth_poi-eks-cluster.yaml
+configmap "aws-auth" unchanged
+
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get nodes
+No resources found.
+
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get nodes
+No resources found.
+
+
+PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get nodes --watch
+
+
