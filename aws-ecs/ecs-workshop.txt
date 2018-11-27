@@ -13,3 +13,10 @@ Password: post graduate diploma (1st NCST joining year)
 
 
 
+vagrant ➜  expertalk-2018-ecs-workshop git:(master) ✗ aws sts get-caller-identity
+{
+    "UserId": "AIDAIIGR6GME566AP3T7K",
+    "Arn": "arn:aws:iam::738035286324:user/yogesh",
+    "Account": "738035286324"
+}
+
