@@ -1,4 +1,8 @@
 *********************************************************************************************************************
+delete all pods
+
+kubectl delete --all pods
+*********************************************************************************************************************
 Apply complete! Resources: 25 added, 0 changed, 0 destroyed.
 
 PS C:\DDrive\MyData\Yogesh\git_repo\DevOps\kubernetes\aws-eks> kubectl --kubeconfig .\kubeconfig_poi-eks-cluster get nodes
@@ -44,6 +48,12 @@ Login inside pod
 https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/
 
 kubectl exec -it optimus-ui-74dcdfb87c-xq62x  -- /bin/bash
+
+If /bin/bash not found in any pod then do this
+kubectl exec -it optimus-runner-5579655b5c-bwx6r   -- apk update
+kubectl exec -it optimus-runner-5579655b5c-bwx6r   -- apk add bash
+And then you can do:
+kubectl exec -it optimus-runner-5579655b5c-bwx6r   -- /bin/bash
 *********************************************************************************************************************
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
