@@ -20,3 +20,35 @@ vagrant ➜  expertalk-2018-ecs-workshop git:(master) ✗ aws sts get-caller-ide
     "Account": "738035286324"
 }
 
+https://738035286324.signin.aws.amazon.com/console
+yogesh / yogesh123
+
+
+ECS_Workshop_Token - Github - Settings > Developer settings > Personal access tokens
+fd7b12e8e5dd3568d0614eef6c01c21438ba2ac0
+
+virtualenv venv --always-copy
+
+
+In case of issue that EC2 not able to join ECS cluster, change the line breaks to LF in user_data_ecs_cluster_part.tpl.txt file
+
+Jobs DSL - Jenkins plugin
+https://github.com/jenkinsci/job-dsl-plugin
+https://github.com/jenkinsci/job-dsl-plugin/wiki
+This is used to create Jenkins Job
+
+
+Datasource in Terraform
+- Resource that is already present and is not managed by Terraform
+- It is read only for Terraform
+
+Argument are to be provided in Terraform
+Attribute is something that we can query / read / use in Terraform
+
+To createa a plan for destroy, use below commands:
+terraform plan -out tfplan -destroy
+terraform apply tfplan
+
+To see human-readable plan:
+terraform show
+
