@@ -25,7 +25,6 @@ yogesh / yogesh123
 
 
 ECS_Workshop_Token - Github - Settings > Developer settings > Personal access tokens
-fd7b12e8e5dd3568d0614eef6c01c21438ba2ac0
 
 virtualenv venv --always-copy
 
