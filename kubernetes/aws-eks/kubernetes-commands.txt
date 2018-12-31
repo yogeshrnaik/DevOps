@@ -1,4 +1,6 @@
 *********************************************************************************************************************
+eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJla3MtYWRtaW4tdG9rZW4tbnY2bjQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZWtzLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiN2M3MmQ3N2MtZmU4OS0xMWU4LWJjNjUtMDIwM2RhNjcxODMwIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmVrcy1hZG1pbiJ9.isYjj0vfzAijuIYNgFp7fvdAG0DvUY75MAzFrHFgzoU5z_OQ0GXFkihBUYSCLDMBZAzgU12oxeT_kQgAIXXg-ydymwEoiov5MdzOCfUFVmlP7MD6aJRTVF_hQwcgzfKiO_gS6We6eRNDOcxMGXSObk689LIhHBzNpa2BeCUdYQF_ngDb1gzod3BOVkGioe_rbhYJvReV2LCW_GxfvQinChMQ-d36npVvOpUsY8MaOWdWo5fUl7BeOcLNetXTzkKSH4Tl1X-mK-UXKPYj0oZC2fPV1uIh5ubc3F3AVeH0tjW85qti3YnyS4IABl_CMucNa3nzInSLoV30J7IMjW6vFA
+*********************************************************************************************************************
 delete all pods
 
 kubectl delete --all pods
